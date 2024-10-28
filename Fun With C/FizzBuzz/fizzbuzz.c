@@ -8,9 +8,9 @@ void fizzbuzz(char *result, size_t maxsize) {
     int buzz = 5;
     size_t written = 0;
     size_t remaining = maxsize;
-    int ret;
     for (int i = 0; i<= n; i++)
         {
+            int ret;
             if (i % fizz == 0 && i % buzz ==0)
             {
                 ret = snprintf(result + written, remaining, "%s%s", FIZZ, BUZZ );
