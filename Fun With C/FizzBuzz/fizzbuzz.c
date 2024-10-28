@@ -1,31 +1,45 @@
 #include <stdio.h>
 
-void fizzbuzz(char result[]) {
+void fizzbuzz(char *result, size_t maxsize) {
     int n = 60;
     char FIZZ[5]="Fizz";
     char BUZZ[5]="Buzz";
     int fizz = 3;
     int buzz = 5;
-    int i = 0;
-    for (i = 0; i<= n; i++)
+    size_t written = 0;
+    size_t remaining = maxsize;
+    int ret;
+    for (int i = 0; i<= n; i++)
         {
             if (i % fizz == 0 && i % buzz ==0)
             {
-                // TODO: Looks like we are overwriting on same memory here
-                snprintf(result, 100000, "%s%s", FIZZ, BUZZ );
-                //printf("FizzBuzz\n");
+                ret = snprintf(result + written, remaining, "%s%s", FIZZ, BUZZ );
             }
-            if (i % buzz == 0)
+            else if (i % buzz == 0)
                 {
-                    //printf("Fizz\n");
+                    ret = snprintf(result + written, remaining, "%s", BUZZ );
                 }
-            if (i % buzz == 0)
+                else if (i % fizz == 0)
                 {
-                    //printf("Buzz\n");
+                    ret = snprintf(result + written, remaining, "%s", FIZZ );
                 }
             else
             {
-                //printf("%d\n", i);
+                ret = snprintf(result + written, remaining, "%d", i );
+            }
+            written += ret;
+            remaining -= ret;
+            if (i == n)
+                {
+                    int period = snprintf(result + written, remaining, ".");
+                    written += period;
+                    remaining -= period;
+                }
+            else
+            {
+                int comma = snprintf(result + written, remaining, ", ");
+                written += comma;
+                remaining -= comma;
             }
         }
 }
@@ -33,8 +47,8 @@ void fizzbuzz(char result[]) {
 
 int main()
 {
-    char output[100000];
-    fizzbuzz(output);
+    char output[100000] = {0};
+    fizzbuzz(output, sizeof(output));
     printf("%s", output);
     return 0;
 }
