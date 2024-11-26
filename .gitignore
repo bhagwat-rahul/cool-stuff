@@ -1,2 +1,9 @@
+# Ignore all files
+*
 
+# Unignore all files with extensions
+!*.*
+
+# Allow directories
+!*/
 .DS_Store
