@@ -12,45 +12,25 @@
 
 // There are 168 prime numbers up to the number 1,000. There are 1,229 prime numbers up to the number 10,000. There are 9,592 prime numbers up to the number 100,000. There are 78,498 prime numbers up to the number 1,000,000.
 # include <stdio.h>
-# include <stdbool.h>
 
 
-bool isMultiple(int number_to_check, int divisor)
+int isMultiple(int number_to_check, int divisor)
 {
     if (number_to_check == divisor)
         {
-            return false;
+            return 0;
         }
-        else if (number_to_check % divisor == 0)
-            {
-                printf("Removing %d", number_to_check);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-}
-
-void removeIntFromArray(int *array, size_t buflen, int index_to_remove)
-{
-    for (size_t counter = index_to_remove; counter < buflen - 1; counter ++)
+    else if (number_to_check % divisor == 0)
         {
-            array[counter]=array[counter + 1];
+            return 1;
+        }
+    else
+        {
+            return 0;
         }
 }
 
-void removeMultiples(int list[], int num, int size)
-{
-    for (int i = 0; i < size; i++)
-        {
-            int j = 13;
-                    if (isMultiple(num, j))
-                        {
-                            removeIntFromArray(list, size, i);
-                        }
-        }
-}
+
 
 int main()
 {
@@ -63,7 +43,7 @@ int main()
     // Step 2: Remove all multiples of a number except itself
     for (int j = 0; j < number_list_size; j++)
     {
-        removeMultiples(number_list, j, number_list_size);
+        //removeMultiples(number_list, j, number_list_size);
     }
 
     printf("%d", number_list_size);
