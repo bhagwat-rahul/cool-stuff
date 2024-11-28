@@ -4,6 +4,9 @@
 # Unignore all files with extensions
 !*.*
 
+#Ignore core_dumps
+*core_dump*
+
 # Allow directories
 !*/
 .DS_Store
