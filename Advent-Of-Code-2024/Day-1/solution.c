@@ -63,6 +63,7 @@ int main()
 {
     // initialise both arrays
     int result = 0;
+    int similarityScore = 0;
     int a[1000];
     int b[1000];
     int aSorted[1000] = {0};
@@ -71,6 +72,7 @@ int main()
     sortList(a, 1000, aSorted);
     sortList(b, 1000, bSorted);
     result = compareList(aSorted, bSorted, 1000);
-    printf("%d\n", result);
+    printf("Result: %d\n", result);
+    printf("Similarity Score: %d\n", similarityScore);
     return 0;
 }
