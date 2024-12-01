@@ -59,11 +59,26 @@ int compareList(int *list1, int *list2, int listLen)
     return result;
 }
 
+int getSimilarityScore(int *listA, int *listB)
+{
+    int score = 0;
+    for (int i = 0; i < 999; i++)
+        {
+            int temp = listA[i];
+            for (int j = 0; j < 999; j++)
+                {
+                    if (temp == listB[j])
+                        {
+                            score+=temp;
+                        }
+                }
+        }
+    return score;
+}
+
 int main()
 {
     // initialise both arrays
-    int totalDistance = 0;
-    int similarityScore = 0;
     int a[1000];
     int b[1000];
     int aSorted[1000] = {0};
@@ -71,7 +86,8 @@ int main()
     scanFilesCreateLists(a,b, 1000);
     sortList(a, 1000, aSorted);
     sortList(b, 1000, bSorted);
-    totalDistance = compareList(aSorted, bSorted, 1000);
+    int totalDistance = compareList(aSorted, bSorted, 1000);;
+    int similarityScore = getSimilarityScore(aSorted, bSorted);
     printf("Result: %d\n", totalDistance);
     printf("Similarity Score: %d\n", similarityScore);
     return 0;
