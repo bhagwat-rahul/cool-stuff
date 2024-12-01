@@ -36,7 +36,8 @@ int main()
     int aSorted[999];
     int bSorted[999];
     int result = 0;
-
+    sortList(a, 999, aSorted);
+    sortList(a, 999, aSorted);
     result = listCompare(aSorted, bSorted, 999);
     printf("%d", result);
     return 0;
