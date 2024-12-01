@@ -9,10 +9,9 @@ void scanFilesCreateLists(int *listA, int *listB, int listSize)
     }
     for (int i = 0; i < listSize; i++)
         {
-            char line[14];
+            char line[15];
             fgets(line, sizeof(line), puzzleInput);
-            sscanf(line, "%5d", &listA[i]);
-            sscanf(line + 8, "%5d", &listB[i]);
+            sscanf(line, "%d %d", &listA[i], &listB[i]);
         }
     fclose(puzzleInput);
 }
@@ -20,19 +19,23 @@ void scanFilesCreateLists(int *listA, int *listB, int listSize)
 // create helper func to find smallest int
 void sortList(int *list, int len, int *sortedList)
 {
-    // sort from low to high into a new array
-    int smallest = list[0];
-    for (int j = 0; j < len; j++)
+    for (int i = 0; i < len; i++)
+        sortedList[i] = list[i];
+
+    for (int i = 0; i < len - 1; i++)
+    {
+        int minIndex = i;
+        for (int j = i + 1; j < len; j++)
         {
-        for (int i = j; i < len; i++)
+            if (sortedList[j] < sortedList[minIndex])
             {
-                if (smallest > list[i])
-                    {
-                        smallest = list[i];
-                    }
+                minIndex = j;
             }
-        sortedList[j]=smallest;
         }
+        int temp = sortedList[i];
+        sortedList[i] = sortedList[minIndex];
+        sortedList[minIndex] = temp;
+    }
 }
 
 int compareList(int *list1, int *list2, int listLen)
@@ -60,22 +63,14 @@ int main()
 {
     // initialise both arrays
     int result = 0;
-    int a[999];
-    int b[999];
-    int aSorted[999];
-    int bSorted[999];
-    scanFilesCreateLists(a,b, 999);
-    sortList(a, 999, aSorted);
-    sortList(a, 999, bSorted);
-    result = compareList(aSorted, bSorted, 999);
-    printf("First A: %d\n", a[0]);
-    printf("Last A: %d\n", a[998]);
-    printf("First B: %d\n", b[0]);
-    printf("Last B: %d\n", b[998]);
-    printf("First Sorted A: %d\n", aSorted[0]);
-    printf("Last Sorted A: %d\n", aSorted[998]);
-    printf("First Sorted B: %d\n", bSorted[0]);
-    printf("Last Sorted B: %d\n", bSorted[998]);
+    int a[1000];
+    int b[1000];
+    int aSorted[1000] = {0};
+    int bSorted[1000] = {0};
+    scanFilesCreateLists(a,b, 1000);
+    sortList(a, 1000, aSorted);
+    sortList(b, 1000, bSorted);
+    result = compareList(aSorted, bSorted, 1000);
     printf("%d\n", result);
     return 0;
 }
