@@ -1,6 +1,6 @@
 # include <stdio.h>
 
-void scanFileCreateList(int *list)
+void scanFilesCreateLists(int *listA, int *listB, int listSize)
 {
     FILE *puzzleInput = fopen("input.txt", "r");
     fclose(puzzleInput);
@@ -53,8 +53,7 @@ int main()
     int b[999];
     int aSorted[999];
     int bSorted[999];
-    scanFileCreateList(a);
-    scanFileCreateList(b);
+    scanFilesCreateLists(a,b, 999);
     sortList(a, 999, aSorted);
     sortList(a, 999, aSorted);
     result = compareList(aSorted, bSorted, 999);
