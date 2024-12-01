@@ -1,10 +1,19 @@
 # include <stdio.h>
 
+void scanList(int *file)
+{
+    FILE *puzzleInput = fopen("puzzle-input.md", "r");
+    fclose(puzzleInput);
+}
 
 // create helper func to find smallest int
 void sortList(int *list, int len, int *sortedList)
 {
     // sort from low to high into a new array
+    for (int i=0; i<sizeof(sortedList); i++)
+        {
+
+        }
 }
 
 int listCompare(int *list1, int *list2, int listLen)
