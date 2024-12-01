@@ -3,6 +3,17 @@
 void scanFilesCreateLists(int *listA, int *listB, int listSize)
 {
     FILE *puzzleInput = fopen("input.txt", "r");
+    if (puzzleInput == NULL) {
+        printf("Error opening file.\n");
+        return;
+    }
+    for (int i = 0; i < listSize; i++)
+        {
+            char line[14];
+            fgets(line, sizeof(line), puzzleInput);
+            sscanf(line, "%5d", &listA[i]);
+            sscanf(line + 8, "%5d", &listB[i]);
+        }
     fclose(puzzleInput);
 }
 
@@ -11,9 +22,9 @@ void sortList(int *list, int len, int *sortedList)
 {
     // sort from low to high into a new array
     int smallest = list[0];
-    for (int j = 0; j < sizeof(sortedList); j++)
+    for (int j = 0; j < len; j++)
         {
-        for (int i=j; i<sizeof(sortedList); i++)
+        for (int i = j; i < len; i++)
             {
                 if (smallest > list[i])
                     {
@@ -55,8 +66,16 @@ int main()
     int bSorted[999];
     scanFilesCreateLists(a,b, 999);
     sortList(a, 999, aSorted);
-    sortList(a, 999, aSorted);
+    sortList(a, 999, bSorted);
     result = compareList(aSorted, bSorted, 999);
-    printf("%d", result);
+    printf("First A: %d\n", a[0]);
+    printf("Last A: %d\n", a[998]);
+    printf("First B: %d\n", b[0]);
+    printf("Last B: %d\n", b[998]);
+    printf("First Sorted A: %d\n", aSorted[0]);
+    printf("Last Sorted A: %d\n", aSorted[998]);
+    printf("First Sorted B: %d\n", bSorted[0]);
+    printf("Last Sorted B: %d\n", bSorted[998]);
+    printf("%d\n", result);
     return 0;
 }
