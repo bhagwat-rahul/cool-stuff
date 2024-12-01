@@ -19,7 +19,7 @@ void fizzbuzz(char *result, size_t maxsize) {
                 {
                     ret = snprintf(result + written, remaining, "%s", BUZZ );
                 }
-                else if (i % fizz == 0)
+            else if (i % fizz == 0)
                 {
                     ret = snprintf(result + written, remaining, "%s", FIZZ );
                 }
