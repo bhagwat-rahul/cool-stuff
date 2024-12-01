@@ -1,8 +1,8 @@
 # include <stdio.h>
 
-void scanList(int *file)
+void scanFileCreateList(int *list)
 {
-    FILE *puzzleInput = fopen("puzzle-input.md", "r");
+    FILE *puzzleInput = fopen("input.txt", "r");
     fclose(puzzleInput);
 }
 
@@ -24,7 +24,7 @@ void sortList(int *list, int len, int *sortedList)
         }
 }
 
-int listCompare(int *list1, int *list2, int listLen)
+int compareList(int *list1, int *list2, int listLen)
 {
     int result = 0;
     // compare indexes and subtract larger from smaller
@@ -48,14 +48,16 @@ int listCompare(int *list1, int *list2, int listLen)
 int main()
 {
     // initialise both arrays
+    int result = 0;
     int a[999];
     int b[999];
     int aSorted[999];
     int bSorted[999];
-    int result = 0;
+    scanFileCreateList(a);
+    scanFileCreateList(b);
     sortList(a, 999, aSorted);
     sortList(a, 999, aSorted);
-    result = listCompare(aSorted, bSorted, 999);
+    result = compareList(aSorted, bSorted, 999);
     printf("%d", result);
     return 0;
 }
