@@ -10,9 +10,17 @@ void scanList(int *file)
 void sortList(int *list, int len, int *sortedList)
 {
     // sort from low to high into a new array
-    for (int i=0; i<sizeof(sortedList); i++)
+    int smallest = list[0];
+    for (int j = 0; j < sizeof(sortedList); j++)
         {
-
+        for (int i=j; i<sizeof(sortedList); i++)
+            {
+                if (smallest > list[i])
+                    {
+                        smallest = list[i];
+                    }
+            }
+        sortedList[j]=smallest;
         }
 }
 
