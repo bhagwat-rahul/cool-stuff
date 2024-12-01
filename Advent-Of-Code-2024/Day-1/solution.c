@@ -62,7 +62,7 @@ int compareList(int *list1, int *list2, int listLen)
 int main()
 {
     // initialise both arrays
-    int result = 0;
+    int totalDistance = 0;
     int similarityScore = 0;
     int a[1000];
     int b[1000];
@@ -71,8 +71,8 @@ int main()
     scanFilesCreateLists(a,b, 1000);
     sortList(a, 1000, aSorted);
     sortList(b, 1000, bSorted);
-    result = compareList(aSorted, bSorted, 1000);
-    printf("Result: %d\n", result);
+    totalDistance = compareList(aSorted, bSorted, 1000);
+    printf("Result: %d\n", totalDistance);
     printf("Similarity Score: %d\n", similarityScore);
     return 0;
 }
