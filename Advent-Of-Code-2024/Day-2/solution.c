@@ -25,20 +25,28 @@ int checkReports(int reportBuf[][300], int levelLen, int reportLen)
             int level = 0;
             if
                 (
-                    reportBuf[report][level] > reportBuf[report][level + 1] &&
+                    reportBuf[report][level + 0] > reportBuf[report][level + 1] &&
                     reportBuf[report][level + 1] > reportBuf[report][level + 2] &&
                     reportBuf[report][level + 2] > reportBuf[report][level + 3] &&
-                    reportBuf[report][level + 3] > reportBuf[report][level + 4]
+                    reportBuf[report][level + 3] > reportBuf[report][level + 4] &&
+                    (reportBuf[report][level + 0] - reportBuf[report][level + 1]) <=3 &&
+                    (reportBuf[report][level + 1] - reportBuf[report][level + 2]) <=3 &&
+                    (reportBuf[report][level + 2] - reportBuf[report][level + 3]) <=3 &&
+                    (reportBuf[report][level + 3] - reportBuf[report][level + 4]) <=3
                 )
                 {
                     safeCount++;
                 }
             else if
                 (
-                    reportBuf[report][level] < reportBuf[report][level + 1] &&
+                    reportBuf[report][level + 0] < reportBuf[report][level + 1] &&
                     reportBuf[report][level + 1] < reportBuf[report][level + 2] &&
                     reportBuf[report][level + 2] < reportBuf[report][level + 3] &&
-                    reportBuf[report][level + 3] < reportBuf[report][level + 4]
+                    reportBuf[report][level + 3] < reportBuf[report][level + 4] &&
+                    (reportBuf[report][level + 1] - reportBuf[report][level + 0]) <=3 &&
+                    (reportBuf[report][level + 2] - reportBuf[report][level + 1]) <=3 &&
+                    (reportBuf[report][level + 3] - reportBuf[report][level + 2]) <=3 &&
+                    (reportBuf[report][level + 4] - reportBuf[report][level + 3]) <=3
                 )
                 {
                     safeCount++;
