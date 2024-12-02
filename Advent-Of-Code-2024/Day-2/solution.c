@@ -1,6 +1,6 @@
 # include <stdio.h>
 
-void scanFilesCreateReports(int reportData[][1000], int levelLen, int reportLen)
+void scanFilesCreateReports(int reportData[][1000], int reportLen)
 {
     FILE *input = fopen("input.txt", "r");
     if (input == NULL) {
@@ -16,7 +16,7 @@ void scanFilesCreateReports(int reportData[][1000], int levelLen, int reportLen)
     fclose(input);
 }
 
-int checkReports(int reportBuf[][1000], int levelLen, int reportLen)
+int checkReports(int reportBuf[][1000], int reportLen)
 {
     int safeCount = 0;
     for (int report = 0; report < reportLen; report++)
@@ -62,8 +62,8 @@ int main()
 {
     int safeLevelCount = 0;
     int reportData[50][1000];
-    scanFilesCreateReports(reportData, 5, 6);
-    safeLevelCount = checkReports(reportData, 5, 6);
+    scanFilesCreateReports(reportData, 1000);
+    safeLevelCount = checkReports(reportData, 1000);
     printf("Safe Level Count: %d\n", safeLevelCount);
     return 0;
 }
