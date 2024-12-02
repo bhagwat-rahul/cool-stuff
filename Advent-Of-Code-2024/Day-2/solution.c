@@ -11,7 +11,7 @@ void scanFilesCreateReports(int reportData[][1000], int reportLen)
         {
             char line[50];
             fgets(line, sizeof(line), input);
-            sscanf(line, "%d %d %d %d %d", &reportData[i][0], &reportData[i][1], &reportData[i][2], &reportData[i][3], &reportData[i][4]);
+            sscanf(line, "%d %d %d %d %d %d %d %d", &reportData[i][0], &reportData[i][1], &reportData[i][2], &reportData[i][3], &reportData[i][4], &reportData[i][5], &reportData[i][6], &reportData[i][7]);
         }
     fclose(input);
 }
@@ -28,10 +28,16 @@ int checkReports(int reportBuf[][1000], int reportLen)
                     reportBuf[report][level + 1] > reportBuf[report][level + 2] &&
                     reportBuf[report][level + 2] > reportBuf[report][level + 3] &&
                     reportBuf[report][level + 3] > reportBuf[report][level + 4] &&
+                    reportBuf[report][level + 4] > reportBuf[report][level + 5] &&
+                    reportBuf[report][level + 5] > reportBuf[report][level + 6] &&
+                    reportBuf[report][level + 6] > reportBuf[report][level + 7] &&
                     (reportBuf[report][level + 0] - reportBuf[report][level + 1]) <=3 &&
                     (reportBuf[report][level + 1] - reportBuf[report][level + 2]) <=3 &&
                     (reportBuf[report][level + 2] - reportBuf[report][level + 3]) <=3 &&
-                    (reportBuf[report][level + 3] - reportBuf[report][level + 4]) <=3
+                    (reportBuf[report][level + 3] - reportBuf[report][level + 4]) <=3 &&
+                    (reportBuf[report][level + 4] - reportBuf[report][level + 5]) <=3 &&
+                    (reportBuf[report][level + 5] - reportBuf[report][level + 6]) <=3 &&
+                    (reportBuf[report][level + 6] - reportBuf[report][level + 7]) <=3
                 )
                 {
                     safeCount++;
@@ -42,10 +48,16 @@ int checkReports(int reportBuf[][1000], int reportLen)
                     reportBuf[report][level + 1] < reportBuf[report][level + 2] &&
                     reportBuf[report][level + 2] < reportBuf[report][level + 3] &&
                     reportBuf[report][level + 3] < reportBuf[report][level + 4] &&
+                    reportBuf[report][level + 4] < reportBuf[report][level + 5] &&
+                    reportBuf[report][level + 5] < reportBuf[report][level + 6] &&
+                    reportBuf[report][level + 6] < reportBuf[report][level + 7] &&
                     (reportBuf[report][level + 1] - reportBuf[report][level + 0]) <=3 &&
                     (reportBuf[report][level + 2] - reportBuf[report][level + 1]) <=3 &&
                     (reportBuf[report][level + 3] - reportBuf[report][level + 2]) <=3 &&
-                    (reportBuf[report][level + 4] - reportBuf[report][level + 3]) <=3
+                    (reportBuf[report][level + 4] - reportBuf[report][level + 3]) <=3 &&
+                    (reportBuf[report][level + 5] - reportBuf[report][level + 4]) <=3 &&
+                    (reportBuf[report][level + 6] - reportBuf[report][level + 5]) <=3 &&
+                    (reportBuf[report][level + 7] - reportBuf[report][level + 6]) <=3
                 )
                 {
                     safeCount++;
