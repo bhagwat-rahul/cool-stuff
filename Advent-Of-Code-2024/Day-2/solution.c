@@ -1,6 +1,6 @@
 # include <stdio.h>
 
-void scanFilesCreateReports(int reportData[][300], int levelLen, int reportLen)
+void scanFilesCreateReports(int reportData[][1000], int levelLen, int reportLen)
 {
     FILE *input = fopen("input.txt", "r");
     if (input == NULL) {
@@ -9,15 +9,14 @@ void scanFilesCreateReports(int reportData[][300], int levelLen, int reportLen)
     }
     for (int i = 0; i < reportLen; i++)
         {
-            char line[30];
+            char line[50];
             fgets(line, sizeof(line), input);
             sscanf(line, "%d %d %d %d %d", &reportData[i][0], &reportData[i][1], &reportData[i][2], &reportData[i][3], &reportData[i][4]);
-            //printf("%d %d %d %d %d\n", reportData[i][0], reportData[i][1], reportData[i][2], reportData[i][3], reportData[i][4]);
         }
     fclose(input);
 }
 
-int checkReports(int reportBuf[][300], int levelLen, int reportLen)
+int checkReports(int reportBuf[][1000], int levelLen, int reportLen)
 {
     int safeCount = 0;
     for (int report = 0; report < reportLen; report++)
@@ -62,7 +61,7 @@ int checkReports(int reportBuf[][300], int levelLen, int reportLen)
 int main()
 {
     int safeLevelCount = 0;
-    int reportData[30][300];
+    int reportData[50][1000];
     scanFilesCreateReports(reportData, 5, 6);
     safeLevelCount = checkReports(reportData, 5, 6);
     printf("Safe Level Count: %d\n", safeLevelCount);
