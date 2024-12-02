@@ -20,57 +20,40 @@ void scanFilesCreateReports(int reportData[][1000], int reportLen)
     fclose(input);
 }
 
-int checkReports(int reportBuf[][1000], int reportLen)
-{
+int checkReports(int reportBuf[][1000], int reportLen) {
     int safeCount = 0;
-    for (int report = 0; report < reportLen; report++)
-        {
-            int level = 0;
-            if
-                (
-                    reportBuf[report][level + 0] > reportBuf[report][level + 1] &&
-                    reportBuf[report][level + 1] > reportBuf[report][level + 2] &&
-                    reportBuf[report][level + 2] > reportBuf[report][level + 3] &&
-                    reportBuf[report][level + 3] > reportBuf[report][level + 4] &&
-                    reportBuf[report][level + 4] > reportBuf[report][level + 5] &&
-                    reportBuf[report][level + 5] > reportBuf[report][level + 6] &&
-                    reportBuf[report][level + 6] > reportBuf[report][level + 7] &&
-                    (reportBuf[report][level + 0] - reportBuf[report][level + 1]) <=3 &&
-                    (reportBuf[report][level + 1] - reportBuf[report][level + 2]) <=3 &&
-                    (reportBuf[report][level + 2] - reportBuf[report][level + 3]) <=3 &&
-                    (reportBuf[report][level + 3] - reportBuf[report][level + 4]) <=3 &&
-                    (reportBuf[report][level + 4] - reportBuf[report][level + 5]) <=3 &&
-                    (reportBuf[report][level + 5] - reportBuf[report][level + 6]) <=3 &&
-                    (reportBuf[report][level + 6] - reportBuf[report][level + 7]) <=3
-                )
-                {
-                    safeCount++;
+
+    for (int report = 0; report < reportLen; report++) {
+        int isIncreasing = 1; // Assume it's increasing initially
+        int isDecreasing = 1; // Assume it's decreasing initially
+
+        int lastValue = -1;
+
+        for (int level = 0; level < 8; level++) {
+            if (reportBuf[report][level] != -1) {
+                if (lastValue != -1) { // Only compare if lastValue is valid
+                    if (lastValue >= reportBuf[report][level]) {
+                        isIncreasing = 0; // Not increasing
+                    }
+                    if (lastValue <= reportBuf[report][level]) {
+                        isDecreasing = 0; // Not decreasing
+                    }
+                    // Check the difference condition
+                    if ((lastValue > reportBuf[report][level] && lastValue - reportBuf[report][level] > 3) ||
+                        (lastValue < reportBuf[report][level] && reportBuf[report][level] - lastValue > 3)) {
+                        isIncreasing = 0;
+                        isDecreasing = 0;
+                    }
                 }
-            else if
-                (
-                    reportBuf[report][level + 0] < reportBuf[report][level + 1] &&
-                    reportBuf[report][level + 1] < reportBuf[report][level + 2] &&
-                    reportBuf[report][level + 2] < reportBuf[report][level + 3] &&
-                    reportBuf[report][level + 3] < reportBuf[report][level + 4] &&
-                    reportBuf[report][level + 4] < reportBuf[report][level + 5] &&
-                    reportBuf[report][level + 5] < reportBuf[report][level + 6] &&
-                    reportBuf[report][level + 6] < reportBuf[report][level + 7] &&
-                    (reportBuf[report][level + 1] - reportBuf[report][level + 0]) <=3 &&
-                    (reportBuf[report][level + 2] - reportBuf[report][level + 1]) <=3 &&
-                    (reportBuf[report][level + 3] - reportBuf[report][level + 2]) <=3 &&
-                    (reportBuf[report][level + 4] - reportBuf[report][level + 3]) <=3 &&
-                    (reportBuf[report][level + 5] - reportBuf[report][level + 4]) <=3 &&
-                    (reportBuf[report][level + 6] - reportBuf[report][level + 5]) <=3 &&
-                    (reportBuf[report][level + 7] - reportBuf[report][level + 6]) <=3
-                )
-                {
-                    safeCount++;
-                }
-            else
-                {
-                    safeCount=safeCount;
-                }
+                lastValue = reportBuf[report][level];
+            }
         }
+
+        // If either condition holds true, count it as safe
+        if (isIncreasing || isDecreasing) {
+            safeCount++;
+        }
+    }
     return safeCount;
 }
 
