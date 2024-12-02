@@ -61,7 +61,7 @@ int checkReports(int reportBuf[][1000], int reportLen)
 int main()
 {
     int safeLevelCount = 0;
-    int reportData[50][1000];
+    int reportData[10][1000];
     scanFilesCreateReports(reportData, 1000);
     safeLevelCount = checkReports(reportData, 1000);
     printf("Safe Level Count: %d\n", safeLevelCount);
