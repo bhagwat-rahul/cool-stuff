@@ -11,7 +11,11 @@ void scanFilesCreateReports(int reportData[][1000], int reportLen)
         {
             char line[50];
             fgets(line, sizeof(line), input);
-            sscanf(line, "%d %d %d %d %d %d %d %d", &reportData[i][0], &reportData[i][1], &reportData[i][2], &reportData[i][3], &reportData[i][4], &reportData[i][5], &reportData[i][6], &reportData[i][7]);
+            int count = sscanf(line, "%d %d %d %d %d %d %d %d", &reportData[i][0], &reportData[i][1], &reportData[i][2], &reportData[i][3], &reportData[i][4], &reportData[i][5], &reportData[i][6], &reportData[i][7]);
+            for (int j = count; j < 8; j++)
+                {
+                    reportData[i][j] = -1;
+                }
         }
     fclose(input);
 }
@@ -73,7 +77,16 @@ int checkReports(int reportBuf[][1000], int reportLen)
 int main()
 {
     int safeLevelCount = 0;
-    int reportData[10][1000];
+    // struct Level
+    // {
+    //     int levelData[10];
+    //     int levelCount;
+    // };
+    // struct Report
+    // {
+    //     struct Level levels[1000];
+    // };
+    int reportData[1000][1000];
     scanFilesCreateReports(reportData, 1000);
     safeLevelCount = checkReports(reportData, 1000);
     printf("Safe Level Count: %d\n", safeLevelCount);
