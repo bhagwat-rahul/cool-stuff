@@ -10,3 +10,4 @@
 # Allow directories
 !*/
 .DS_Store
+/*/main.dSYM
