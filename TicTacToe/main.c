@@ -89,6 +89,6 @@ int main()
            return 0;
         }
 	}
-	printf("It's a draw!");
+	printf("It's a draw!\n");
 	return 0;
 }
