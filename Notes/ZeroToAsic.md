@@ -21,5 +21,6 @@ n-bit register has n flip flops a flip flop is just on/off stored in hw.
 flip flops are built with latches.
 Latches dont really hold the val for long cz they rely on capacitance which goes out after a while.
 This is why we need flip flops.
-ideal flip flop samples immediately with no ambiguity on output and sample instantly on clkedge.
+Ideal flip flop samples immediately with no ambiguity on output and sample instantly on clkedge (i.e every time clock counts and not at an offset).
+
 
