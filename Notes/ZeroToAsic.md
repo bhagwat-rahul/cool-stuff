@@ -12,9 +12,14 @@ also magic can be config'ed to have the command window as a terminal like window
 
 magic could have better layer picking in the sidebar
 vdd is the drain vss is source and in mosfets input current decides whether the silicon that connects source to drain conducts or not.
-circuits are defined with verilog that can be simulated using yosys, the sim uses an intermediate representation since it doesn't have info from your std cells yet, and then you can synth actual logic from cells of your pdk.
+Circuits are defined with verilog that can be simulated using yosys, the sim uses an intermediate representation since it doesn't have info from your std cells yet.
+Then you can synth actual logic from cells of your pdk.
 
-A register in HW (verilog) is just a collection of flip flops configured to store values upto certain lengths. (8 bit reg will have flip flops to store up to 8 bits).
+A register in HW (verilog) is just a collection of flip flops configured to store values upto certain lengths.
+(8 bit reg will have flip flops to store up to 8 bits).
 n-bit register has n flip flops a flip flop is just on/off stored in hw.
-
+flip flops are built with latches.
+Latches dont really hold the val for long cz they rely on capacitance which goes out after a while.
+This is why we need flip flops.
+ideal flip flop samples immediately with no ambiguity on output and sample instantly on clkedge.
 
