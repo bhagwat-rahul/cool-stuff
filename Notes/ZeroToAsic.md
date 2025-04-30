@@ -28,3 +28,9 @@ debounce is basically check a signal x number of times before flipping val.
 eg. when you press a button the signal kind of bounces a few times between 0 and 1, so just sample a few times
 before flipping the count.
 
+2 types of logic:- combinatorial and sequential.
+hardware by default is combinatorial (will compute things instantly in a 'stateless' way).
+sequential logic is when you need to hold things in memory / need some state.
+sequential logic is implemented using combinatorial hw with flip flops to store temporary things.
+
+
