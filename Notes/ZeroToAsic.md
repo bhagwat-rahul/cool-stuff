@@ -9,7 +9,6 @@ these simulations aren't very good at sim'ing parasitics so maybe actually physi
 assistant to quickly ref and grep through your pdk is low hanging fruit (index pdk and provide help)
 also magic can be config'ed to have the command window as a terminal like window in ide's the single window per thing philosophy is stupid imo.
 
-
 magic could have better layer picking in the sidebar
 vdd is the drain vss is source and in mosfets input current decides whether the silicon that connects source to drain conducts or not.
 Circuits are defined with verilog that can be simulated using yosys, the sim uses an intermediate representation since it doesn't have info from your std cells yet.
@@ -22,5 +21,10 @@ flip flops are built with latches.
 Latches dont really hold the val for long cz they rely on capacitance which goes out after a while.
 This is why we need flip flops.
 Ideal flip flop samples immediately with no ambiguity on output and sample instantly on clkedge (i.e every time clock counts and not at an offset).
-
+Most programs will tell you that you have accidentally created a latch in your circuit.
+You usually never want to create a latch and always use flip flops, latches are issues!!!
+we can implement debouncing mechanisms when working with external clocks or when we can't trust clock accuracy.
+debounce is basically check a signal x number of times before flipping val.
+eg. when you press a button the signal kind of bounces a few times between 0 and 1, so just sample a few times
+before flipping the count.
 
