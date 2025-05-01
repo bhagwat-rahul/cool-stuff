@@ -33,4 +33,9 @@ hardware by default is combinatorial (will compute things instantly in a 'statel
 sequential logic is when you need to hold things in memory / need some state.
 sequential logic is implemented using combinatorial hw with flip flops to store temporary things.
 
+In verilog we use <= to assign a value to a var (usually read from right to left)
+using '=' results in a blocking op which can be unpredictable, therefore <= is used which is non blocking.
+For more info [read this about the differences.](https://www.perplexity.ai/search/blocking-vs-non-blocking-assig-RkHCoI1nS_OPGGIdcf.EWg)
+
+
 
