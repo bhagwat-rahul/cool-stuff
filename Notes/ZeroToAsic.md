@@ -36,6 +36,14 @@ sequential logic is implemented using combinatorial hw with flip flops to store 
 In verilog we use <= to assign a value to a var (usually read from right to left)
 using '=' results in a blocking op which can be unpredictable, therefore <= is used which is non blocking.
 For more info [read this about the differences.](https://www.perplexity.ai/search/blocking-vs-non-blocking-assig-RkHCoI1nS_OPGGIdcf.EWg)
+some advice:-
+
+```
+In Verilog, if you want to create sequential logic use a clocked always block with Nonblocking assignments.
+If you want to create combinational logic use an always block with Blocking assignments.
+Try not to mix the two in the same always block.
+```
+
 
 
 
