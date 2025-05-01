@@ -47,3 +47,6 @@ Try not to mix the two in the same always block.
 Also, if you modify a register in an always clocked block, try not to modify it elsewhere since both happen at the same time.
 Just in general be careful of modifying things in loops or ifs and outside.
 Could be tough to wrap head around what happens when since code is not procedural but can be at times.
+
+`always_comb begin` in verilog is a better syntax to write `always @(*)begin`.
+[Verilog note about always running code](https://chatgpt.com/share/6813f4ca-1850-8000-aec0-12fcf59bf812)
