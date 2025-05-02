@@ -5,7 +5,7 @@ int makeMoves(char *selections)
     printf("To make a move enter a number from 1-9 to place your symbol\n");
     int move, inputValid;
     inputValid = scanf("%d", &move);
-    while (inputValid != 1 || move < 0 || move > 10 || selections[move - 1] != '0')
+    while (inputValid != 1 || move < 1 || move > 9 || selections[move - 1] != '0')
     {
         if (inputValid != 1) {
             while (getchar() != '\n');
