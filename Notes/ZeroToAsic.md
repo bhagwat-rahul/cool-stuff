@@ -66,3 +66,6 @@ A good opportunity to also have solvers running in the cloud since resource heav
 
 Why verify? Cz taping chips is expensive!!! Also take a while (few months), so it's good to know things work.
 
+Noticing a lot of back and forth between you code and some kind of waveform / sim viewer where you go around checking if signals are what you want them to be.
+Could potentially be automated with some kind of deterministic tool to check the simulation file or an LLM (not trustworthy but to spot quick things.)
+
