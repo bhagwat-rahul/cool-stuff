@@ -68,4 +68,11 @@ Why verify? Cz taping chips is expensive!!! Also take a while (few months), so i
 
 Noticing a lot of back and forth between you code and some kind of waveform / sim viewer where you go around checking if signals are what you want them to be.
 Could potentially be automated with some kind of deterministic tool to check the simulation file or an LLM (not trustworthy but to spot quick things.)
+Maybe even constantly be simulating and showing things in a tab you can open much like DRC thingy's.
+Also need to switch sby file to diff modes depending on what you're solving for:-
+bmc   	Bounded Model Checking: Finds counterexamples within a fixed number of steps.
+cover 	Checks if certain states or conditions can be reached (cover points).
+prove 	Unbounded proof: Attempts to prove that a property always holds, for all possible executions.
+
+So maybe even have a toggle between diff states. Just in general a good idea to have GUI things for stuff like this, but at all times allow full access to the underlying thing the GUI configures.
 
