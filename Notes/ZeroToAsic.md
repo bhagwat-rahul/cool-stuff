@@ -50,3 +50,19 @@ Could be tough to wrap head around what happens when since code is not procedura
 
 `always_comb begin` in verilog is a better syntax to write `always @(*)begin`.
 [Verilog note about always running code](https://chatgpt.com/share/6813f4ca-1850-8000-aec0-12fcf59bf812)
+
+Verification is done to ensure your logic does what you want it to, you can write cover statements and asserts
+(much like c programming) to do so, and then you simulate stuff in something like gtkwave or yosys.
+This is also pretty command heavy and could be well suited to a GUI.
+So things like opening a specific thing in gtkw with a specic config:-
+`gtkwave timer/engine_0/trace0.vcd timer.gtkw`
+
+Usually this verif, etc. is done by things like SAT Solvers or SMT Solvers.
+Easy way to think about it is like:-
+Imagine a man a wolf and a deer on one side of a river, need to get them to other side, but there's safety issues w animals eating each other.
+Using your code you define who can eat what and who can't + the end outcome you want and the solver will run a simulation and give you a soln.
+Or let you know that there isn't one.
+A good opportunity to also have solvers running in the cloud since resource heavy (guessing that's what a lot of prop tools do.)
+
+Why verify? Cz taping chips is expensive!!! Also take a while (few months), so it's good to know things work.
+
