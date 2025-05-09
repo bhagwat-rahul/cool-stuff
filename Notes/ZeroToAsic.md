@@ -84,3 +84,9 @@ In Verilog you can define things 4 types of ways (in order of abstraction level 
 
 When people refer to RTL design (register transfer level) they mean a combo of behavioral and dataflow design.
 The higher the level of abstraction the more HW and PDK agnostic you are.
+
+Similarly you can also simulate at diff levels:-
+eg.
+  - ngspice simulates the physical behavior of circuits (digital and analog) (voltages, currents, etc.)
+  - yosys simulates the 'logic' for correctness (digital only)
+
