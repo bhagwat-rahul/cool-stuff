@@ -94,3 +94,11 @@ Could be cool to let people submit on a shuttle and auto verify the wrapper (wou
 
 Good idea to have scripts to show summaries of diff cells, etc, top level views of designs and their needs and requirements. Could build cool visualisations, etc.
 
+Also cool to see logs whenever there is a long running cloud op happening like rtl - gds or some kind of verif / simulation in the cloud.
+We want to be as designer friendly as possible while not needing people to endlessly script custom stuff.
+
+Whenever you're programming in Verilog remember that things aren't how they would be in a programming language.
+Eg. String matching like if a == "this" will do an actual bitwise match where a and "this" are bits stored in physical registers.
+
+List of [openlane output files](https://docs.google.com/spreadsheets/d/1SePRLd8waVPa1BXPMB2cBOUIXK2lYbP_ace_7pNuEw8/edit?gid=1859713634#gid=1859713634)
+
