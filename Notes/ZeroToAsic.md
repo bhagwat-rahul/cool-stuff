@@ -90,3 +90,5 @@ eg.
   - ngspice simulates the physical behavior of circuits (digital and analog) (voltages, currents, etc.)
   - yosys simulates the 'logic' for correctness (digital only)
 
+Could be cool to let people submit on a shuttle and auto verify the wrapper (would make shared tape-outs way easier + build community).
+
