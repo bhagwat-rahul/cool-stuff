@@ -76,3 +76,11 @@ prove 	Unbounded proof: Attempts to prove that a property always holds, for all 
 
 So maybe even have a toggle between diff states. Just in general a good idea to have GUI things for stuff like this, but at all times allow full access to the underlying thing the GUI configures.
 
+In Verilog you can define things 4 types of ways (in order of abstraction level high to low):-
+  1. Behavioral (Algorithmic):- Implement in terms of algo you want the HW to perform (C like)
+  2. Dataflow Level:- Specify how data flows between registers and how it's processed.
+  3. Gate Level:- Define logic gates and their interconnects similar to gate level logic diagram.
+  4. Switch Level:- Lowest abstraction level. Implement modules in terms of switches, storage nodes and interconnections.
+
+When people refer to RTL design (register transfer level) they mean a combo of behavioral and dataflow design.
+The higher the level of abstraction the more HW and PDK agnostic you are.
