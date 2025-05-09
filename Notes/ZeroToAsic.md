@@ -92,3 +92,5 @@ eg.
 
 Could be cool to let people submit on a shuttle and auto verify the wrapper (would make shared tape-outs way easier + build community).
 
+Good idea to have scripts to show summaries of diff cells, etc, top level views of designs and their needs and requirements. Could build cool visualisations, etc.
+
