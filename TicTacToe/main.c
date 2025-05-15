@@ -11,6 +11,7 @@ int getAIMove(char *selections) {
   }
   int aiMoveIndex = (rand() % validMoveCount);
   int aiMove = validMoves[aiMoveIndex];
+  printf("AI plays %d", aiMove);
   return aiMove;
 }
 
