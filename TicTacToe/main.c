@@ -15,7 +15,7 @@ int getAIMove(char *selections) {
 }
 
 int makeMoves(char *selections, int multiplayer, int gameCounter) {
-  int move, inputValid;
+  int move, inputValid = 0;
   if ((multiplayer == 0) || (multiplayer == 1 && gameCounter % 2 == 0) ||
       (multiplayer == 2 && gameCounter % 2 != 0)) {
     printf("To make a move enter a number from 1-9 to place your symbol\n");
@@ -87,10 +87,18 @@ void drawGrid(char *selections) {
 
 int main() {
   char selections[9];
-  int multiplayer = 0;
+  int multiplayer = 0, multiplayerInputValid = 0;
   printf(
       "Do you want to be player 1, 2 or is this 2 humans (0 for 2 humans)!\n");
-  scanf("%d", &multiplayer);
+  multiplayerInputValid = scanf("%d", &multiplayer);
+  while (multiplayerInputValid != 1 || multiplayer < 0 || multiplayer > 3) {
+    if (multiplayerInputValid != 1) {
+      while (getchar() != '\n')
+        ;
+    }
+    printf("Invalid input! Try again!\n");
+    multiplayerInputValid = scanf("%d", &multiplayer);
+  }
   for (int i = 0; i <= 8; i++) {
     selections[i] = '0';
   }
