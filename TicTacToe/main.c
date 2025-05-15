@@ -91,7 +91,7 @@ int main() {
   printf(
       "Do you want to be player 1, 2 or is this 2 humans (0 for 2 humans)!\n");
   multiplayerInputValid = scanf("%d", &multiplayer);
-  while (multiplayerInputValid != 1 || multiplayer < 0 || multiplayer > 3) {
+  while (multiplayerInputValid != 1 || multiplayer < 0 || multiplayer > 2) {
     if (multiplayerInputValid != 1) {
       while (getchar() != '\n')
         ;
