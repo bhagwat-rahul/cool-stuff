@@ -5,37 +5,24 @@ int getAIMove(char *selections) {
   int available, validMoves[9], validMoveCount = 0;
   for (available = 0; available <= 8; available++) {
     if (selections[available] == '0') {
-      validMoves[validMoveCount] = available;
-      validMoveCount++;
+      validMoves[validMoveCount++] = available;
     }
   }
   int aiMoveIndex = (rand() % validMoveCount);
-  int aiMove = validMoves[aiMoveIndex];
-  printf("AI plays %d", aiMove);
+  int aiMove = validMoves[aiMoveIndex] + 1;
+  printf("AI plays %d\n", aiMove);
   return aiMove;
 }
 
 int makeMoves(char *selections, int multiplayer, int gameCounter) {
   int move, inputValid;
-  if (multiplayer == 0) {
+  if ((multiplayer == 0) || (multiplayer == 1 && gameCounter % 2 == 0) ||
+      (multiplayer == 2 && gameCounter % 2 != 0)) {
     printf("To make a move enter a number from 1-9 to place your symbol\n");
     inputValid = scanf("%d", &move);
-  } else if (multiplayer == 1) {
-    if (gameCounter % 2 == 0) {
-      printf("To make a move enter a number from 1-9 to place your symbol\n");
-      inputValid = scanf("%d", &move);
-    } else {
-      inputValid = 1;
-      move = getAIMove(selections);
-    }
-  } else if (multiplayer == 2) {
-    if (gameCounter % 2 != 0) {
-      printf("To make a move enter a number from 1-9 to place your symbol\n");
-      inputValid = scanf("%d", &move);
-    } else {
-      inputValid = 1;
-      move = getAIMove(selections);
-    }
+  } else {
+    inputValid = 1;
+    move = getAIMove(selections);
   }
   while (inputValid != 1 || move < 1 || move > 9 ||
          selections[move - 1] != '0') {
