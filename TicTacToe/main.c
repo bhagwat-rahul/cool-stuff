@@ -9,7 +9,7 @@ int getAIMove(char *selections) {
       validMoveCount++;
     }
   }
-  int aiMoveIndex = (rand() % validMoveCount) + 1;
+  int aiMoveIndex = (rand() % validMoveCount);
   int aiMove = validMoves[aiMoveIndex];
   return aiMove;
 }
