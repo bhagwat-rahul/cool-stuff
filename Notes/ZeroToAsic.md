@@ -102,3 +102,17 @@ Eg. String matching like if a == "this" will do an actual bitwise match where a 
 
 List of [openlane output files](https://docs.google.com/spreadsheets/d/1SePRLd8waVPa1BXPMB2cBOUIXK2lYbP_ace_7pNuEw8/edit?gid=1859713634#gid=1859713634)
 
+Analog core / chip design flow:-
+  1. Design a schematic (circuit diagram) (oss tool xschem)
+  2. Simulation / Netlist (within xschem you can gen a netlist and simulation to check if stuff does what you want.) The netlist defines component connectivity and params.
+  3. Layout import (magic can then import the layout using info from your pdk to auto place pdk devices)
+  4. You still need to manually connect pins and route stuff.
+  5. LVS:- Layout vs schematic (check if the physical layout is the same in behavior as the schematic)
+  6. There are smaller automated place and route python tools etc if you don't want to do manually (maybe a good thing to look into improving.)
+  7. Then extract parasitics from your design / if simulation is wonky fix stuff ( steps 1 -7 till you get what you want that's DRC error free)
+  8. Once you have what you want use magic to export GDS, fix errors in GDS if any.
+  9. Make a data sheet describing your thing.
+  10. If only analog then gds is good to submit else you can use openlane to create lef files to integrate your block into a mixed signal design.
+
+Xschem:- UI could be improved, shortcuts not apparent can show keymaps in tooltips on hover.
+
