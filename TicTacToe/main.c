@@ -85,8 +85,7 @@ void drawGrid(char *selections) {
   return;
 }
 
-int main() {
-  char selections[9];
+int getPlayerCount() {
   int multiplayer = 0, multiplayerInputValid = 0;
   printf(
       "Do you want to be player 1, 2 or is this 2 humans (0 for 2 humans)!\n");
@@ -99,6 +98,12 @@ int main() {
     printf("Invalid input! Try again!\n");
     multiplayerInputValid = scanf("%d", &multiplayer);
   }
+  return multiplayer;
+}
+
+int main() {
+  char selections[9];
+  int multiplayer = getPlayerCount();
   for (int i = 0; i <= 8; i++) {
     selections[i] = '0';
   }
