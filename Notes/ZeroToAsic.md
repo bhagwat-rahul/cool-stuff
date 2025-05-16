@@ -116,3 +116,9 @@ Analog core / chip design flow:-
 
 Xschem:- UI could be improved, shortcuts not apparent can show keymaps in tooltips on hover.
 
+When chips are physically manufactured there is some variation in wafer type each wafer.
+To account for this you usually simulate your design under various conditions.
+The extreme versions of these conditions are called corners (fast fast, slow fast, slow slow, typical typical etc.)
+Usually with a digital design you want to simulate on slow-slow since that is the worst case scenario and handle clock speed accordingly.
+With analog it's not apparent what case is the worst / best so good to simulate all.
+
