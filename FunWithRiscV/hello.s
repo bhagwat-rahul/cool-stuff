@@ -12,4 +12,4 @@ _start:
 	ecall
 
 .section .data
-hello: ascii "hello world!\n"
+hello: .ascii "hello world!\n"
