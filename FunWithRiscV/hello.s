@@ -7,7 +7,7 @@ _start:
 	li a7, 64
 	ecall
 
-	li a0, 2
+	li a0, 0
 	li a7, 93
 	ecall
 
