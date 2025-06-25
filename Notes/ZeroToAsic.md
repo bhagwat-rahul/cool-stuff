@@ -122,3 +122,14 @@ The extreme versions of these conditions are called corners (fast fast, slow fas
 Usually with a digital design you want to simulate on slow-slow since that is the worst case scenario and handle clock speed accordingly.
 With analog it's not apparent what case is the worst / best so good to simulate all.
 
+# some info abt memories from morris mano book
+ROM is mostly just a type of combinational logic with x ins y outs, and for every in and out a certain bit is defined.
+this changes with eprom which is 'reprogrammable', you can make everything 0 by flashin uv light.
+then eeprom goes a step above and you can 'reprogram' by providing a specific voltage that sets everything to 1.
+ssd's are based on nand based eeprom like memory (can write lesser times but supports way larger data)
+then there are random access memories (there are also volatile non random access mems like disc drums)
+you could say these are more memories in the fact that they 'store' stuff and dont return computed truth table based things like rom.
+there are dynamic rams where each bit needs to be reset frequently (i.e multiple times a second, used in ddr memory etc.).
+then there is sram (static) where it doesn't need to be reset if power active (more exp per bit mostly used for caches)
+fpgas could also be said to be large rom ish things since they're essentially pre configured truth tables
+
