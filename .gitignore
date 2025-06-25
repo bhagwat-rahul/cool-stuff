@@ -12,3 +12,4 @@
 .DS_Store
 /*/main.dSYM
 *.o
+/notebooks/.ipynb_checkpoints
