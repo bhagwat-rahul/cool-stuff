@@ -3,10 +3,10 @@
 # The process repeats until only one person remains.
 # Goal: Find the index (0-based) of the survivor.
 
-def josephus () -> str:
+def josephus () -> int:
 	n:int = int(input("total people?\n"))
 	k:int = int(input("removal offset?\n"))
-	people: list[str] = [str(i) for i in range(0, n)]
+	people: list[int] = list(range(n))
 	lastpopped:int = 0
 	while len(people) > 1:
 		popthis:int = (k + lastpopped - 1) % len(people)
