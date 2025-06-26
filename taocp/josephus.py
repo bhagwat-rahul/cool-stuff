@@ -3,16 +3,15 @@
 # The process repeats until only one person remains.
 # Goal: Find the index (0-based) of the survivor.
 
-def josephus () -> int:
+def josephus () -> str:
 	n:int = int(input("total people?\n"))
 	k:int = int(input("removal offset?\n"))
-	people:list[int] = list(range(0, n))
-	while len(people) != 1:
-		if (k < len(people)):
-			print("TODO: Handle case where k less than num")
-		else:
-			people.pop(k)
-
+	people: list[str] = [str(i) for i in range(0, n)]
+	lastpopped:int = 0
+	while len(people) > 1:
+		popthis:int = (k + lastpopped - 1) % len(people)
+		people.pop(popthis)
+		lastpopped = popthis
 	return people[0]
 
 def main ():
