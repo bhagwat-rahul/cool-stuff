@@ -3,36 +3,33 @@
 # Note: once you use up an element in a sequence you can't reuse
 
 def lcs() -> list[str]:
-	x:list[str] = list[str](input("enter 1st sequence\n"))
-	y:list[str] = list[str](input("enter 2nd sequence\n"))
-	z:list[str] = [] # TODO: get actual lcs
-	print(x, "\n")
-	print(y, "\n")
-	# Let's first get all common elements since the longest possible sequence can be that
-	# We just don't know if that *is* the longest sequence due to order
-	xset:set[str] = set[str](x)
-	yset:set[str] = set[str](y)
-	lps:set[str] = xset & yset
-	lpslen:int = len(lps)
-	z = lcs_recursive(x,y)
-	print("uniques in x: ", xset)
-	print("uniques in y: ", yset)
-	print("unique in xy: ", lps)
-	print("max soln len: ", lpslen)
-	return z
+	x:list[str] = list[str](input("1st sequence\n"))
+	y:list[str] = list[str](input("2nd sequence\n"))
+	result: list[str] = []
+	m, n = len(x), len(y)
+	dp: list[list[int]] = [[0] * (n + 1) for _ in range(m + 1)]
+	for i in range(1, m + 1):
+		for j in range(1, n + 1):
+			if x[i - 1] == y[j - 1]:
+				dp[i][j] = dp[i - 1][j - 1] + 1
+			else:
+				dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
 
-def lcs_recursive(x: list[str], y: list[str]) -> list[str]:
-  if not x or not y:
-      return []
-  if x[-1] == y[-1]:
-      return lcs_recursive(x[:-1], y[:-1]) + [x[-1]]
-  else:
-      left = lcs_recursive(x[:-1], y)
-      right = lcs_recursive(x, y[:-1])
-      return left if len(left) > len(right) else right
+	p, q = m, n
+	while p > 0 and q > 0:
+		if x[p - 1] == y[q - 1]:
+			result.append(x[p - 1])
+			p -= 1
+			q -= 1
+		elif dp[p - 1][q] >= dp[p][q - 1]:
+			p -= 1
+		else:
+			q -= 1
+
+	return result[::-1]
 
 def main ():
-	print ("Soln: ", len(lcs()))
+	print ("soln: ", len(lcs()))
 
 if __name__ == "__main__":
     main()
