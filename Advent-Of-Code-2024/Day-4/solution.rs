@@ -2,6 +2,7 @@ use std::fs;
 
 fn main() {
     let pattern = "XMAS";
+    let pattern2 = "MAS";
     let reversed: String = pattern.chars().rev().collect();
     let filename = "input.txt";
     let mut count = 0;
@@ -23,6 +24,22 @@ fn main() {
         "Pattern '{}' occurred {} times, {} forwards, {} backwards, {} vertical, {} diagonal",
         pattern, count, fwd, bwd, vert, diag
     );
+    let mascount = xmascount(&grid, lines, llen);
+    println!(
+        "MAS count for pattern {} in part 2 is {}",
+        pattern2, mascount
+    );
+}
+
+fn xmascount(grid: &Vec<Vec<char>>, lines: usize, llen: usize) -> usize {
+    let mut xmcount = 0;
+    for i in 0..lines - 2 {
+        for j in 0..llen - 2 {}
+    }
+    for i in 0..lines - 2 {
+        for j in 2..llen {}
+    }
+    return xmcount;
 }
 
 fn vert(grid: &Vec<Vec<char>>, lines: usize, llen: usize) -> usize {
