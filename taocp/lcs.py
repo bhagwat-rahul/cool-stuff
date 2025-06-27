@@ -1,6 +1,6 @@
 # Given two sequences X = x1, x2 ... xm and Y = y1, y2 ... yn, find a maximum-length sequence Z = z1, z2 ... zk such that:
 # Z is a subsequence of X, and Z is a subsequence of Y
-# Note: once you use up an element in a sequence you can't reuse
+# Note: once you use up an element in a sequence at an index you can't reuse (unless appears multiple times in both)
 
 def lcs() -> list[str]:
 	x:list[str] = list[str](input("1st sequence\n"))
