@@ -14,6 +14,18 @@ fn main() {
         .lines()
         .map(|line| line.chars().collect())
         .collect();
+    let fwd = contents.matches(pattern).count();
+    let bwd = contents.matches(&reversed).count();
+    let vert = vert(&grid, lines, llen);
+    let diag = diag(&grid, lines, llen);
+    count = count + fwd + bwd + vert + diag;
+    println!(
+        "Pattern '{}' occurred {} times, {} forwards, {} backwards, {} vertical, {} diagonal",
+        pattern, count, fwd, bwd, vert, diag
+    );
+}
+
+fn vert(grid: &Vec<Vec<char>>, lines: usize, llen: usize) -> usize {
     let mut vert = 0;
     for i in 0..lines - 3 {
         for j in 0..llen {
@@ -33,6 +45,10 @@ fn main() {
             }
         }
     }
+    return vert;
+}
+
+fn diag(grid: &Vec<Vec<char>>, lines: usize, llen: usize) -> usize {
     let mut diag = 0;
     for i in 0..lines - 3 {
         for j in 0..llen - 3 {
@@ -70,11 +86,5 @@ fn main() {
             }
         }
     }
-    let fwd = contents.matches(pattern).count();
-    let bwd = contents.matches(&reversed).count();
-    count = count + fwd + bwd + vert + diag;
-    println!(
-        "Pattern '{}' occurred {} times, {} forwards, {} backwards, {} vertical, {} diagonal",
-        pattern, count, fwd, bwd, vert, diag
-    );
+    return diag;
 }
