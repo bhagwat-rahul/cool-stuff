@@ -33,11 +33,38 @@ fn main() {
 
 fn xmascount(grid: &Vec<Vec<char>>, lines: usize, llen: usize) -> usize {
     let mut xmcount = 0;
-    for i in 0..lines - 2 {
-        for j in 0..llen - 2 {}
-    }
-    for i in 0..lines - 2 {
-        for j in 2..llen {}
+    for i in 1..lines - 1 {
+        for j in 1..llen - 1 {
+            if grid[i][j] == 'A'
+                && grid[i - 1][j - 1] == 'M'
+                && grid[i + 1][j + 1] == 'S'
+                && grid[i - 1][j + 1] == 'M'
+                && grid[i + 1][j - 1] == 'S'
+            {
+                xmcount += 1;
+            } else if grid[i][j] == 'A'
+                && grid[i - 1][j - 1] == 'M'
+                && grid[i + 1][j + 1] == 'S'
+                && grid[i - 1][j + 1] == 'S'
+                && grid[i + 1][j - 1] == 'M'
+            {
+                xmcount += 1;
+            } else if grid[i][j] == 'A'
+                && grid[i - 1][j - 1] == 'S'
+                && grid[i + 1][j + 1] == 'M'
+                && grid[i - 1][j + 1] == 'S'
+                && grid[i + 1][j - 1] == 'M'
+            {
+                xmcount += 1;
+            } else if grid[i][j] == 'A'
+                && grid[i - 1][j - 1] == 'S'
+                && grid[i + 1][j + 1] == 'M'
+                && grid[i - 1][j + 1] == 'M'
+                && grid[i + 1][j - 1] == 'S'
+            {
+                xmcount += 1;
+            }
+        }
     }
     return xmcount;
 }
