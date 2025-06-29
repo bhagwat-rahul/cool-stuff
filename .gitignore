@@ -6,6 +6,8 @@
 
 #Ignore core_dumps
 *core_dump*
+*.cmi
+*.cmo
 
 # Allow directories
 !*/
