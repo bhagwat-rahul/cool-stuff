@@ -27,6 +27,10 @@ vector<pair<int, int>> loadpairs(string)
 vector<int> genorder (const vector<pair<int, int>>& pairs)
 {
 	vector<int> res;
+	for (const auto& p : pairs)
+    {
+        res.push_back(p.first);
+    }
 	return res;
 }
 
