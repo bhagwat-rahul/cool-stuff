@@ -7,7 +7,7 @@
 	.string	"r"                     # File open mode string "r"
 	.align	3                       # Align to 8-byte boundary
 .LC1:                               # String literal label
-	.string	"sample.txt"            # Filename string
+	.string	"input.txt"            # Filename string
 	.align	3                       # Align to 8-byte boundary
 .LC2:                               # String literal label
 	.string	"open failed"           # Error message string
