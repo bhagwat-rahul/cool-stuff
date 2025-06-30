@@ -2,21 +2,21 @@
 #include <stdlib.h>
 
 int main() {
-    FILE *file = fopen("sample.txt", "r");
+    FILE *file = fopen("input.txt", "r");
     if (!file) {
         perror("open failed");
         return 1;
     }
     fseek(file, 0, SEEK_END);
     long filesize = ftell(file);
-    rewind(file); 
+    rewind(file);
     char *data = malloc(filesize + 1);
     if (!data) {
         fclose(file);
         return 1;
     }
     fread(data, 1, filesize, file);
-    data[filesize] = '\0'; 
+    data[filesize] = '\0';
     fclose(file);
     int elfcount = 0;
     int has_data = 0;
@@ -35,4 +35,3 @@ int main() {
     free(data);
     return 0;
 }
-
