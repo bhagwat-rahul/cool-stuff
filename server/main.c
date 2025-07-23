@@ -17,10 +17,10 @@ int main()
 
   struct sockaddr *addr_ptr = (struct sockaddr *)&addr;
 
-  const char *response = "HTTP/1.1 200 OK\r\n"
-                   "Content-Type: text/html\r\n"
-                   "Content-Length: 16\r\n"
-                   "\r\n"
+  const char *response = "HTTP/1.1 200 OK\n"
+                   "Content-Type: text/html\n"
+                   "Content-Length: 16\n"
+                   "\n"
                    "Server healthy!\n";
 
   int server_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
