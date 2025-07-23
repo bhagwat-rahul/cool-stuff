@@ -39,7 +39,7 @@ int main()
       puts("listening failed!");
       return 1;
   }
-  do
+  while (1)
   {
     int accepted = accept(server_fd, NULL, NULL);
     if (accepted < 0) {
@@ -57,6 +57,6 @@ int main()
     printf("%s", buffer);
     write(accepted, response, strlen(response));
     close(accepted);
-  } while (1);
+  }
   return 0;
 }
