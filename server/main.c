@@ -1,5 +1,6 @@
-/* this is a server in c, relying on a bunch of abstractions
-   (kernel , driver, tcp ip) to start with. rm 1 by 1 as makes sense. */
+/* server relying on a bunch of abstractions
+   (kernel, driver, tcp/ip) to start with.
+   rm 1 by 1 as makes sense. */
 
 # include <stdio.h> // Debug only
 # include <sys/socket.h>
