@@ -6,6 +6,7 @@
 # include <sys/socket.h>
 # include <netinet/in.h>
 # include <unistd.h>
+# include <string.h> // We can implement this ourselves but let's use for now
 
 int main()
 {
@@ -15,6 +16,13 @@ int main()
   addr.sin_addr.s_addr    = INADDR_ANY;
 
   struct sockaddr *addr_ptr = (struct sockaddr *)&addr;
+
+  const char *response = "HTTP/1.1 200 OK\r\n"
+                   "Content-Type: text/html\r\n"
+                   "Content-Length: 16\r\n"
+                   "\r\n"
+                   "Server healthy!\n";
+
   int server_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
   if (server_fd < 0) {
       puts("socket creation failed!");
@@ -40,8 +48,15 @@ int main()
     }
     char buffer[1024];
     int bytes_read = read(accepted, buffer, sizeof(buffer)-1);
+    if (bytes_read <= 0) {
+        puts("read failed or conn closed");
+        close(accepted);
+        continue;
+    }
     buffer[bytes_read] = '\0';
     printf("%s", buffer);
+    write(accepted, response, strlen(response));
+    close(accepted);
   } while (1);
   return 0;
 }
