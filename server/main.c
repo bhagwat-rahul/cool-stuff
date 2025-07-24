@@ -16,12 +16,8 @@ int main()
   addr.sin_addr.s_addr    = INADDR_ANY;
 
   struct sockaddr *addr_ptr = (struct sockaddr *)&addr;
-
-  const char *response = "HTTP/1.1 200 OK\n"
-                   "Content-Type: text/html\n"
-                   "Content-Length: 16\n"
-                   "\n"
-                   "Server healthy!\n";
+  char *res_code, *res_cont_type, *res_cont_len, *res_cont;
+  char headers[512] = "\0", res[2048] = "\0";
 
   int server_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
   if (server_fd < 0) {
@@ -55,7 +51,20 @@ int main()
     }
     buffer[bytes_read] = '\0';
     printf("%s", buffer);
-    write(accepted, response, strlen(response));
+
+    res_code      = "HTTP/1.1 200 OK\n";
+    res_cont_type = "Content-Type: text/html\n";
+    res_cont_len  = "Content-Length: 16\n";
+    res_cont      = "Server healthy!\n";
+
+    strcpy(headers, res_code);
+    strcat(headers, res_cont_type);
+    strcat(headers, res_cont_len);
+    strcat(res, headers);
+    strcat(res, "\n");
+    strcat(res, res_cont);
+
+    write(accepted, res, strlen(res));
     close(accepted);
   }
   return 0;
