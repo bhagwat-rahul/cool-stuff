@@ -38,6 +38,12 @@ static const char allowedInName[] = {
 /* Fx */   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 };
 
+static const char *res_protocol       = "HTTP/1.1";
+static const char *res_code_200       = "200 OK";
+static const char *res_cont_type_str  = "Content-Type: ";
+static const char *res_cont_len_str   = "Content-Length: ";
+static const char *allowed_methods[] = { "GET" };
+
 static int sanitizeString(char *z){
   int nChange = 0;
   while( *z ){
@@ -68,7 +74,7 @@ typedef struct {
 /* for file in files create a FileEntry for eachfile and return fcount
  * ret  -(line number) of errored line if errors anywhere
  */
-int loadfiles()
+int load_files(FileEntry *files)
 {
   int fcount = 0;
   DIR *d = opendir(PUBLIC_DIR);
@@ -95,7 +101,8 @@ int main()
   char headers[512] = "\0", res[2048] = "\0";
 
   puts("loading webpage files!");
-  int lfile = loadfiles();
+  FileEntry files[] = {};
+  int lfile = load_files(files);
   if (lfile <= 0)
     {
       printf("Loading files from %s errored or it is empty\n", PUBLIC_DIR);
@@ -132,8 +139,20 @@ int main()
         continue;
     }
     req_buf[bytes_read] = '\0';
-    printf("Raw req: %s", req_buf);
-    // TODO: Parse path out of req_buf and sanitize safely
+    printf("Raw req: %s\n\n", req_buf);
+    // TODO: Sanitize safely
+    if (sscanf(req_buf, "%7s %255s", method, raw_path) != 2) {
+        puts("Malformed request line");
+        close(accepted);
+        continue;
+    }
+    printf("Req type: %s\nReq path:- %s\n", method, raw_path);
+    if (strcmp(method, "GET") != 0) // TODO: not static get use from allowed methods
+      {
+        puts("Invalid request method we only support GET!"); // send apropos response
+        close(accepted);
+        continue;
+      }
 
     res_code      = "HTTP/1.1 200 OK";
     res_cont_type = "Content-Type: text/html";
