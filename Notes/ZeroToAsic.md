@@ -132,4 +132,3 @@ you could say these are more memories in the fact that they 'store' stuff and do
 there are dynamic rams where each bit needs to be reset frequently (i.e multiple times a second, used in ddr memory etc.).
 then there is sram (static) where it doesn't need to be reset if power active (more exp per bit mostly used for caches)
 fpgas could also be said to be large rom ish things since they're essentially pre configured truth tables
-
