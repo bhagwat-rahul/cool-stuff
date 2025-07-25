@@ -1,6 +1,8 @@
 /* single file http(s) server relying on a bunch of
    abstractions (kernel, driver, tcp/ip) to start with.
-   rm 1 by 1 as makes sense for no deps / baremetal. */
+   rm 1 by 1 as makes sense for no deps / baremetal.
+   would love to use quic over udp eventually since
+   it's newer (HTTP/3) and easier for baremetal. */
 
 # include <stdio.h> // Debug only
 # include <sys/socket.h> // unistd usually includes this but better to explicitly include
@@ -9,14 +11,14 @@
 # include <string.h> // We can implement this ourselves but let's use for now
 # include <dirent.h>
 
-#define PUBLIC_DIR "./public"
+# define PUBLIC_DIR "./public"
 
 // inspired by althttpd, doing my little bit in the rebellion
-#ifdef HTTP_CRLF
-static const char newline[3] = "\r\n";
-#else
-static const char newline[2] = "\n";
-#endif
+# ifdef SEND_CR
+# define CRLF "\r\n"
+# else
+# define CRLF "\n"
+# endif
 
 static const char allowedInName[] = {
       /*  x0  x1  x2  x3  x4  x5  x6  x7  x8  x9  xa  xb  xc  xd  xe  xf */
@@ -42,7 +44,7 @@ static const char *res_protocol       = "HTTP/1.1";
 static const char *res_code_200       = "200 OK";
 static const char *res_cont_type_str  = "Content-Type: ";
 static const char *res_cont_len_str   = "Content-Length: ";
-static const char *allowed_methods[] = { "GET" };
+static const char *allowed_methods[]  = { "GET" };
 
 static int sanitizeString(char *z){
   int nChange = 0;
@@ -71,9 +73,7 @@ typedef struct {
     size_t size;
 } FileEntry;
 
-/* for file in files create a FileEntry for eachfile and return fcount
- * ret  -(line number) of errored line if errors anywhere
- */
+/* create FileEntry for each file in dir and return file count / -1 if error */
 int load_files(FileEntry *files)
 {
   int fcount = 0;
@@ -160,16 +160,16 @@ int main()
     res_cont      = "Server healthy!";
 
     strcpy(headers, res_code);
-    strcat(headers, newline);
+    strcat(headers, CRLF);
     strcat(headers, res_cont_type);
-    strcat(headers, newline);
+    strcat(headers, CRLF);
     strcat(headers, res_cont_len);
-    strcat(headers, newline);
-    strcat(headers, newline);
+    strcat(headers, CRLF);
+    strcat(headers, CRLF);
 
     strcat(res, headers);
     strcat(res, res_cont);
-    strcat(res, newline);
+    strcat(res, CRLF);
 
     write(accepted, res, strlen(res));
     close(accepted);
