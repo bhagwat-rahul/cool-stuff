@@ -159,19 +159,15 @@ int main()
     res_cont_len  = "Content-Length: 16";
     res_cont      = "Server healthy!";
 
-    strcpy(headers, res_code);
-    strcat(headers, CRLF);
-    strcat(headers, res_cont_type);
-    strcat(headers, CRLF);
-    strcat(headers, res_cont_len);
-    strcat(headers, CRLF);
-    strcat(headers, CRLF);
-
-    strcat(res, headers);
-    strcat(res, res_cont);
-    strcat(res, CRLF);
-
-    write(accepted, res, strlen(res));
+    write(accepted, res_code, strlen(res_code));
+    write(accepted, CRLF, strlen(CRLF));
+    write(accepted, res_cont_type, strlen(res_cont_type));
+    write(accepted, CRLF, strlen(CRLF));
+    write(accepted, res_cont_len, strlen(res_cont_len));
+    write(accepted, CRLF, strlen(CRLF));
+    write(accepted, CRLF, strlen(CRLF));
+    write(accepted, res_cont, strlen(res_cont));
+    write(accepted, CRLF, strlen(CRLF));
     close(accepted);
   }
   return 0;
