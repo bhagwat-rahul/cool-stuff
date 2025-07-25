@@ -89,6 +89,34 @@ int load_files(FileEntry *files)
   return fcount;
 }
 
+int handle_req(int accepted)
+{
+  int handled = 0;
+  char *res_code, *res_cont_type, *res_cont_len, *res_cont;
+  res_code      = "HTTP/1.1 200 OK";
+  res_cont_type = "Content-Type: text/html";
+  res_cont_len  = "Content-Length: 16";
+  res_cont      = "Server healthy!";
+
+  write(accepted, res_code, strlen(res_code));
+  write(accepted, CRLF, strlen(CRLF));
+  write(accepted, res_cont_type, strlen(res_cont_type));
+  write(accepted, CRLF, strlen(CRLF));
+  write(accepted, res_cont_len, strlen(res_cont_len));
+  write(accepted, CRLF, strlen(CRLF));
+  write(accepted, CRLF, strlen(CRLF));
+  write(accepted, res_cont, strlen(res_cont));
+  write(accepted, CRLF, strlen(CRLF));
+  close(accepted);
+
+  return handled;
+}
+
+int handle_method (char *req_buf)
+{
+  return 0;
+}
+
 int main()
 {
   struct sockaddr_in addr = {0};
@@ -97,8 +125,6 @@ int main()
   addr.sin_addr.s_addr    = INADDR_ANY;
 
   struct sockaddr *addr_ptr = (struct sockaddr *)&addr;
-  char *res_code, *res_cont_type, *res_cont_len, *res_cont;
-  char headers[512] = "\0", res[2048] = "\0";
 
   puts("loading webpage files!");
   FileEntry files[] = {};
@@ -113,39 +139,47 @@ int main()
       puts("socket creation failed!");
       return 1;
   }
+
   int binding   = bind(server_fd, addr_ptr, sizeof(addr));
   if (binding < 0)
     {
       puts("bind failed!");
       return 1;
     }
+
   int listening = listen(server_fd, 10);
   if (listening < 0) {
       puts("listening failed!");
       return 1;
   }
+
   while (1)
   {
     char req_buf[1024], method[8], raw_path[256];
+
     int accepted = accept(server_fd, NULL, NULL);
     if (accepted < 0) {
       puts("failed to accept incoming conn!");
       return 1;
     }
+
     int bytes_read = read(accepted, req_buf, sizeof(req_buf)-1);
     if (bytes_read <= 0) {
         puts("read failed or conn closed");
         close(accepted);
         continue;
     }
+
     req_buf[bytes_read] = '\0';
     printf("Raw req: %s\n\n", req_buf);
+
     // TODO: Sanitize safely
     if (sscanf(req_buf, "%7s %255s", method, raw_path) != 2) {
         puts("Malformed request line");
         close(accepted);
         continue;
     }
+
     printf("Req type: %s\nReq path:- %s\n", method, raw_path);
     if (strcmp(method, "GET") != 0) // TODO: not static get use from allowed methods
       {
@@ -154,21 +188,7 @@ int main()
         continue;
       }
 
-    res_code      = "HTTP/1.1 200 OK";
-    res_cont_type = "Content-Type: text/html";
-    res_cont_len  = "Content-Length: 16";
-    res_cont      = "Server healthy!";
-
-    write(accepted, res_code, strlen(res_code));
-    write(accepted, CRLF, strlen(CRLF));
-    write(accepted, res_cont_type, strlen(res_cont_type));
-    write(accepted, CRLF, strlen(CRLF));
-    write(accepted, res_cont_len, strlen(res_cont_len));
-    write(accepted, CRLF, strlen(CRLF));
-    write(accepted, CRLF, strlen(CRLF));
-    write(accepted, res_cont, strlen(res_cont));
-    write(accepted, CRLF, strlen(CRLF));
-    close(accepted);
+    int handled = handle_req(accepted);
   }
   return 0;
 }
