@@ -86,6 +86,7 @@ int load_files(FileEntry *files)
   while ((entry = readdir(d))) {
     fcount++;
   }
+  closedir(d);
   return fcount;
 }
 
