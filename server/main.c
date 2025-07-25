@@ -20,52 +20,11 @@
 # define CRLF "\n"
 # endif
 
-static const char allowedInName[] = {
-      /*  x0  x1  x2  x3  x4  x5  x6  x7  x8  x9  xa  xb  xc  xd  xe  xf */
-/* 0x */   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-/* 1x */   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-/* 2x */   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,
-/* 3x */   1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  0,  0,
-/* 4x */   0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
-/* 5x */   1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  0,  1,
-/* 6x */   0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
-/* 7x */   1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  1,  0,
-/* 8x */   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-/* 9x */   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-/* Ax */   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-/* Bx */   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-/* Cx */   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-/* Dx */   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-/* Ex */   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-/* Fx */   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-};
-
 # define RES_PROTOCOL  "HTTP/1.1"
 # define RES_CODE_200  "200 OK"
 # define CONT_TYPE_STR "Content-Type: "
 # define CONT_LEN_STR  "Content-Length: "
 static const char *allowed_methods[]  = { "GET" };
-
-static int sanitizeString(char *z){
-  int nChange = 0;
-  while( *z ){
-    if( !allowedInName[*(unsigned char*)z] ){
-      char cNew = '_';
-      if( *z=='%' && z[1]!=0 && z[2]!=0 ){
-        int i;
-        if( z[1]=='2' ){
-          if( z[2]=='e' || z[2]=='E' ) cNew = '.';
-          if( z[2]=='f' || z[2]=='F' ) cNew = '/';
-        }
-        for(i=3; (z[i-2] = z[i])!=0; i++){}
-      }
-      *z = cNew;
-      nChange++;
-    }
-    z++;
-  }
-  return nChange;
-}
 
 typedef struct {
     char *filename;
@@ -174,7 +133,7 @@ int main()
     req_buf[bytes_read] = '\0';
     printf("Raw req: %s\n\n", req_buf);
 
-    // TODO: Sanitize safely
+    // TODO: Safely match with ram filenames
     if (sscanf(req_buf, "%7s %255s", method, raw_path) != 2) {
         puts("Malformed request line");
         close(accepted);
