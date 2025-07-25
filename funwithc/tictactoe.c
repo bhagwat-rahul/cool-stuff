@@ -1,6 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*
+ Min max algos are these things where you can assign points to good / bad moves.
+ We want to implement something like this.
+ So what we want to do is have a func that 'plays' out the entire game and adds points on a good move and removes points on a bad move.
+ AI then plays the move w highest points.
+ Calc points as follows:- if ai wins a situation, the last move is valued at + 1 else -1 (0 for draw).
+ System to calc points for non last moves is kinda weird and i don't understand yet. (involves recursion)
+ Kinda complex, but heres how we can start:-
+
+ Step 1:-
+ Ask user if they want to play against AI + if they want to be player 1 or 2 (0 is 2 humans.)
+ Then in makeMoves, if human move take input if aiMove run aiMove function which is like so:-
+ make an Array of available moves that contains all numbers ai can move to.
+ ai will at random pick one available move.
+
+ Step 2:-
+ To make smarter, make both ai and human pick moves till game ends running the minimax algo.
+ Then make ai play most optimal move.
+
+ win combos:-
+ 012
+ 345
+ 678
+ 036
+ 147
+ 258
+ 048
+ 246
+ */
+
 int getAIMove(char *selections) {
   int available, validMoves[9], validMoveCount = 0;
   for (available = 0; available <= 8; available++) {
