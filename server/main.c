@@ -40,10 +40,10 @@ static const char allowedInName[] = {
 /* Fx */   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 };
 
-static const char *res_protocol       = "HTTP/1.1";
-static const char *res_code_200       = "200 OK";
-static const char *res_cont_type_str  = "Content-Type: ";
-static const char *res_cont_len_str   = "Content-Length: ";
+# define RES_PROTOCOL  "HTTP/1.1"
+# define RES_CODE_200  "200 OK"
+# define CONT_TYPE_STR "Content-Type: "
+# define CONT_LEN_STR  "Content-Length: "
 static const char *allowed_methods[]  = { "GET" };
 
 static int sanitizeString(char *z){
