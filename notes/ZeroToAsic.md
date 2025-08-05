@@ -132,3 +132,14 @@ you could say these are more memories in the fact that they 'store' stuff and do
 there are dynamic rams where each bit needs to be reset frequently (i.e multiple times a second, used in ddr memory etc.).
 then there is sram (static) where it doesn't need to be reset if power active (more exp per bit mostly used for caches)
 fpgas could also be said to be large rom ish things since they're essentially pre configured truth tables
+
+# some more things about 'memory' not in the physical sense but conventions etc.
+in the context of cpu's memory is spoken of as:-
+1. bit (1 or 0)
+2. byte (8 bits) (8 due to historic reasons since ascii chars needed 7 bits for representation + 1 bit parity, also, since 8 is a power of 2)
+3. word (usually whatever the bit-width or 'bitness' of a cpu is, 32, 64, 128, etc)
+4. half word and double word which are relative to word and have obvious meanings.
+
+addressing systems then try to support arbitrary memory accesses by having offsets.
+usually the least you can ask for is a byte, so arbitrary byte accessing works but for word, halfword or double word, your access needs to be aligned so you dont ask for things in 2 different words.
+since that can introduce latency while loading stuff since cpu needs to read and reconcile data from 2 diff words before sending back to you.
