@@ -7,6 +7,10 @@
    To start, it will serve static files only from
    a specified dir. For now new files / updates will
    require a re-run of the server.
+   Also to start, let's keep it simple and do one process
+   per request, so serve a req and clean up proc, can
+   change this later as we get to baremetal and see what
+   queuing / parallel implementation we need.
 */
 
 # include <stdio.h> // Debug only
