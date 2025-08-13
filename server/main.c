@@ -1,8 +1,13 @@
-/* single file http(s) server relying on a bunch of
+/*
+   single file http(s) server relying on a bunch of
    abstractions (kernel, driver, tcp/ip) to start with.
    rm 1 by 1 as makes sense for no deps / baremetal.
    would love to use quic over udp eventually since
-   it's newer (HTTP/3) and easier for baremetal. */
+   it's newer (HTTP/3) and easier for baremetal.
+   To start, it will serve static files only from
+   a specified dir. For now new files / updates will
+   require a re-run of the server.
+*/
 
 # include <stdio.h> // Debug only
 # include <sys/socket.h> // unistd usually includes this but better to explicitly include
@@ -24,6 +29,7 @@
 # define RES_CODE_200  "200 OK"
 # define CONT_TYPE_STR "Content-Type: "
 # define CONT_LEN_STR  "Content-Length: "
+# define PORT_LISTEN   8080
 static const char *allowed_methods[]  = { "GET" };
 
 typedef struct {
@@ -81,7 +87,7 @@ int main()
 {
   struct sockaddr_in addr = {0};
   addr.sin_family         = AF_INET;
-  addr.sin_port           = htons(8080);
+  addr.sin_port           = htons(PORT_LISTEN);
   addr.sin_addr.s_addr    = INADDR_ANY;
 
   struct sockaddr *addr_ptr = (struct sockaddr *)&addr;
@@ -112,6 +118,8 @@ int main()
       puts("listening failed!");
       return 1;
   }
+
+  printf("Listening on port %d\n", PORT_LISTEN);
 
   while (1)
   {
