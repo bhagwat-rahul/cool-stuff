@@ -53,4 +53,30 @@ so eg. do you want 1 core w 128 exec units, 8 cores with 16 exec's or 16 cores w
 good insight here is non floating point alu units can be super small
 
 (could be fun to write parametized verilog for this and run some benchmarking on sky130pdk/fpga simulations)
+(benchmarks could be stuff like comparisons on streams of vec instr's non vec, wall clk time, throughput, etc.)
+(power utilisation for diff types or proc types, etc.)
+
+one consideration is, you have to ensure the same instructions are being run on mult data for simd.
+for eg. if you have an if else branch that works on a vector, then some elements will have to go via if code path
+and others via else, so that doubles the amt of time.
+if you have an if else and you structure so that the more popular case takes longer than non popular case to exec,
+that can massively slow down stuff. divergent code like this tough to parallelise.
+but if you do simd on divergent, try to ensure conditionals are similar performance or if you can make assumptions
+like knowing which condition is likelier then make that quicker and not take too long?
+simd parallelism is usually done at compile time if explicit or runtime by hw if implicit.
+
+there is also multi threading which would be having multiple register states per core, so that way when on instruction
+is waiting on memory to be fetched into cache you just exec other ones in their own reg's
+
+so in hw if you have fetch+decode, exec, memacc/wb(reg's you're execing on) units diff types so far are:-
+1. superscalar:- do multiple independent things at once, in hw this means multiple fetch+decode and exec w common mem/wb interface and an out of order instruction co-ordinator.
+2. simd:- common fetch/decode/memacc/wb but mult (vector) exec units.
+3. multi-core:- just do fully diff things everything duplicated.
+4. multi-thread:- has multi mem/wb interface to reduce stall time, common fetch/decode, can have simd like multi exec.
+
+in multi threaded you probably want to have enough threads to account for your longest amt of stall time from slowest memory.
+also probably dont want too many since memory takes up larger space than logic and every thread is just replicated regs (memory)
+could also do something where instead of serving continuously you always serve unit waiting for longest etc. some consierations to make there.
+
+
 
