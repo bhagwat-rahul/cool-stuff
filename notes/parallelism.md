@@ -78,5 +78,16 @@ in multi threaded you probably want to have enough threads to account for your l
 also probably dont want too many since memory takes up larger space than logic and every thread is just replicated regs (memory)
 could also do something where instead of serving continuously you always serve unit waiting for longest etc. some consierations to make there.
 
+bringing this all together you can a large dispatcher at the top with all these things mixed in diff quantities and the dispatcher / scheduler just ensures max utlisation provided we have things to do.
 
+one implementation details is that cpu's are always simd never simt and gpu's are usually simt.
+simt is just single instruction multiple thread.
+a way to think about this is simt would be instantiating a regfile 8 times.
+simd would be having every reg in the regfile be 8 vec wide.
+in simt, technically each thread has their own prog counters they still do the same thing though (look at warps in gpu's)
+
+usually, still in modern systems we are blocked by the speed of memory, cz even hbm's are 1% of the speed that alu's demand for max throughput.
+so usually you're trying to optimise programs for the least amount of mem fetches since that's currently the costliest.
+so favor computing things (arithmetic) over loading things (memacc's) if you have a choice.
+^ this is for situations where you have tons of things that could be fed to the pipe.
 
