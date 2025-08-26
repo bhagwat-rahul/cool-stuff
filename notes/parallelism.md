@@ -91,6 +91,17 @@ so usually you're trying to optimise programs for the least amount of mem fetche
 so favor computing things (arithmetic) over loading things (memacc's) if you have a choice.
 ^ this is for situations where you have tons of things that could be fed to the pipe.
 
+intel ispc compiler gives you some amount of abstraction over having to manually manage threading and simd.
+similar to what things like cuda, etc. would do. instead of having to specify simd width's and thread spawning,
+you usually define the work that needs to be done, what part is parallelisable, give it a parallelisable impl.
+and it will parallelise it.
+
+It runs in 'gangs' so whenever you specify a task it will spawn x gangs and return results once all gangs are done.
+ispc code compiles down to .o files so your cpp can call it normally.
+
+Can be tricky to manage race conditions for common vars that need to be updated.
+To fix you can use locks, intermediate vec vars, thread pooling, etc.
+
 apart from simd like stuff you could also have parallelism where each parr unit does diff things.
 some examples of this are recursive functions where each level down is independent.
 there's cilk in c that let's you do this kinda stuff where you can just cilk_spawn and cilk_sync.
@@ -108,4 +119,3 @@ internally these are implemented using atomics.
 
 these locks/spawns and other constructs will also build dag's or dependency graphs that you then need to follow.
 a good part of what things like pytorch, etc. do
-
