@@ -91,3 +91,18 @@ so usually you're trying to optimise programs for the least amount of mem fetche
 so favor computing things (arithmetic) over loading things (memacc's) if you have a choice.
 ^ this is for situations where you have tons of things that could be fed to the pipe.
 
+apart from simd like stuff you could also have parallelism where each parr unit does diff things.
+some examples of this are recursive functions where each level down is independent.
+there's cilk in c that let's you do this kinda stuff where you can just cilk_spawn and cilk_sync.
+not to be confused with fork and join, since fork implies that the work will start asap.
+cilk simply says that this work is async do this whenever before i call sync (or implicitly the end of a func)
+
+the underlying implementation could just run things as you wrote them and not do anything parallel,
+or run every spawned thing (which in turn could spawn more stuff etc)
+if it kept calling every spawned thing there would be work to do in the queue always before sync instead of having to wait.
+
+also, usually when doing parallel stuff you have things like locks and barriers for using shared vars/state.
+so a lock on a var ensures other people don't read/write to from it.
+and barriers ensure that no more than x things use a resource at the same time.
+internally these are implemented using atomics.
+
