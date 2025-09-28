@@ -117,5 +117,6 @@ so a lock on a var ensures other people don't read/write to from it.
 and barriers ensure that no more than x things use a resource at the same time.
 internally these are implemented using atomics.
 
-these locks/spawns and other constructs will also build dag's or dependency graphs that you then need to follow.
-a good part of what things like pytorch, etc. do
+these locks/spawns and other constructs will also build dag's (directed acyclic graphs) or dependency graphs that you then need to follow.
+a good part of what things like pytorch, etc. do is this.
+
