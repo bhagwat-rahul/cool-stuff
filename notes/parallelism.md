@@ -120,3 +120,8 @@ internally these are implemented using atomics.
 these locks/spawns and other constructs will also build dag's (directed acyclic graphs) or dependency graphs that you then need to follow.
 a good part of what things like pytorch, etc. do is this.
 
+task scheduling:-
+it is good to have a lot of small tasks to take adv of timeslicing, etc.
+during scheduling, better to do longer tasks first so that all threads are more likely to end at the same time.
+this way we don't have to wait on 1 thing finishing exec cz it's doing a long task at the end while other's are done.
+
