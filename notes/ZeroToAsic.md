@@ -28,10 +28,10 @@ debounce is basically check a signal x number of times before flipping val.
 eg. when you press a button the signal kind of bounces a few times between 0 and 1, so just sample a few times
 before flipping the count.
 
-2 types of logic:- combinatorial and sequential.
-hardware by default is combinatorial (will compute things instantly in a 'stateless' way).
+2 types of logic:- combinational and sequential.
+hardware by default is combinational (will compute things instantly in a 'stateless' way).
 sequential logic is when you need to hold things in memory / need some state.
-sequential logic is implemented using combinatorial hw with flip flops to store temporary things.
+sequential logic is implemented using combinational hw with flip flops to store temporary things.
 
 In verilog we use <= to assign a value to a var (usually read from right to left)
 using '=' results in a blocking op which can be unpredictable, therefore <= is used which is non blocking.
