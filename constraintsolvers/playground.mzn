@@ -13,4 +13,9 @@ var 1..4: y; % y anything between 1 - 4
 constraint x+y > 2; % x+y needs to be greater than 2
 constraint x-y < 1; % x-y needs to be less than 1
 solve satisfy; % provide answers for the given constraints (possible vals of x & y in this case)
+% solve satisfy will solve for things after it as well since syntax not procedural
 
+% declaring something as int asks for val at runtime or you can run using data file marked with *.dzn
+int: n;
+var 1..n: num;
+constraint num > 4;
