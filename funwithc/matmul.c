@@ -9,7 +9,7 @@
 #define SQUARE_MATRIX_DIMENSION 1024
 #endif
 
-// TODO: currently only for 2 matrices, ideally want to multiply n matrices
+// TODO: currently only for 2 matrices, ideally want to multiply n matrices (maybe just call recursively?)
 int matrixMultiply(float *matrix1, float *matrix2, int m1Dimension,
                    int m2Dimension, size_t sizeOfM1, size_t sizeOfM2) {
   int return_code = 0;
