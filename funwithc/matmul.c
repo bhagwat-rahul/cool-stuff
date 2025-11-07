@@ -9,24 +9,30 @@
 #define SQUARE_MATRIX_DIMENSION 1024
 #endif
 
-// TODO: currently only for 2 matrices, ideally want to multiply n matrices (maybe just call recursively?)
-int matrixMultiply(float *matrix1, float *matrix2, int m1Dimension,
-                   int m2Dimension, size_t sizeOfM1, size_t sizeOfM2) {
-  int return_code = 0;
-  if (sizeOfM1 == sizeOfM2) {
-    puts("this is a square matrix");
-    // multiplySquareMatrices();
-  } else {
-    puts("this is a non-square matrix");
-    // multiplyNonSquareMatrices();
+long long matrixMultiply(float *matrix1, float *matrix2, int m1Rows,
+                         int m1Columns, int m2Rows, int m2Columns,
+                         size_t sizeOfM1, size_t sizeOfM2) {
+  long long flop_count = 2LL * m1Rows * m1Columns * m2Columns;
+  if (m1Columns != m2Rows) {
+    puts("unable to multiply these matrices");
+    return -1LL;
   }
-  return return_code;
+  float *resultMatrix =
+      calloc((size_t)m1Rows * (size_t)m2Columns, sizeof(float));
+  for (int i = 0; i < m1Rows; i++) {
+    for (int j = 0; j < m2Columns; j++) {
+      float sum = 0.0f;
+      for (int k = 0; k < (m1Columns /** or m2Rows */); k++) {
+        sum += matrix1[i * m1Columns + k] * matrix2[k * m2Columns + j];
+      }
+      resultMatrix[i * m2Columns + j] = sum;
+    }
+  }
+  return flop_count;
 }
 
 int main() {
   struct timespec ts, start_ts, end_ts;
-  clock_gettime(CLOCK_MONOTONIC, &start_ts);
-
   printf("Size of square matrix is:- %dx%d\n", SQUARE_MATRIX_DIMENSION,
          SQUARE_MATRIX_DIMENSION);
 
@@ -41,6 +47,13 @@ int main() {
   float *matrix2 = calloc(
       (size_t)SQUARE_MATRIX_DIMENSION * SQUARE_MATRIX_DIMENSION, sizeof(float));
 
+  // Fill matrix1 & matrix2 with randoms
+  srand(time(NULL));
+  for (size_t i = 0;
+       i < (size_t)SQUARE_MATRIX_DIMENSION * SQUARE_MATRIX_DIMENSION; i++) {
+    matrix1[i] = (float)rand() / RAND_MAX;
+    matrix2[i] = (float)rand() / RAND_MAX;
+  }
   if (!matrix1 || !matrix2) {
     fprintf(stderr, "Memory allocation for matrix 1 and 2 failed\n");
     return 1;
@@ -48,17 +61,24 @@ int main() {
   printf("Matrix 1 elem 0,0:- %f\nMatrix 2 elem 0,0:- %f\n\n", matrix1[0],
          matrix2[0]);
 
-  // TODO: Multiply matrices here, count number of flop's, divide by timespent to get flops
-  matrixMultiply(matrix1, matrix2, SQUARE_MATRIX_DIMENSION, SQUARE_MATRIX_DIMENSION, sizeof(matrix1), sizeof(matrix2));
+  clock_gettime(CLOCK_MONOTONIC, &start_ts); // Start timing for flops/s
 
-  clock_gettime(CLOCK_MONOTONIC, &end_ts);
-  // Total time spent is time in seconds + nanoseconds since nanoseconds wrap
-  // post every second
-  unsigned int timespent_nanoseconds = end_ts.tv_nsec - start_ts.tv_nsec;
-  unsigned int timespent_seconds = end_ts.tv_sec - start_ts.tv_sec;
-  double timespent_absolute =
-      timespent_seconds + (timespent_nanoseconds * 1e-9);
-  printf("Absolute:- %fs, Seconds:- %ds, Nanoseconds:- %dns\n",
-         timespent_absolute, timespent_seconds, timespent_nanoseconds);
+  long long flop_count =
+      matrixMultiply(matrix1, matrix2, SQUARE_MATRIX_DIMENSION,
+                     SQUARE_MATRIX_DIMENSION, SQUARE_MATRIX_DIMENSION,
+                     SQUARE_MATRIX_DIMENSION, sizeof(matrix1), sizeof(matrix2));
+  if (flop_count == -1) {
+    puts("error multiplying matrices");
+  }
+  printf("FLOP's:- %llu\n", flop_count);
+
+  clock_gettime(CLOCK_MONOTONIC, &end_ts); // End time for flops/s
+
+  long long timespent_seconds = end_ts.tv_sec - start_ts.tv_sec;
+
+  printf("Time Spent Seconds:- %llus\n", timespent_seconds);
+  printf("FLOPS (Floating Point Operations Per Second) = %.3e\n",
+         ((double)flop_count / (double)timespent_seconds));
+
   return 0;
 }
