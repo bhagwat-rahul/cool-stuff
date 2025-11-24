@@ -143,3 +143,6 @@ in the context of cpu's memory is spoken of as:-
 addressing systems then try to support arbitrary memory accesses by having offsets.
 usually the least you can ask for is a byte, so arbitrary byte accessing works but for word, halfword or double word, your access needs to be aligned so you dont ask for things in 2 different words.
 since that can introduce latency while loading stuff since cpu needs to read and reconcile data from 2 diff words before sending back to you.
+
+## zeroasic analog
+in xschem don't label your things with verilog reserved keywords like input, output, etc to avoid conflicts.
