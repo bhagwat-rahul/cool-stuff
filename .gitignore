@@ -15,4 +15,5 @@
 /*/main.dSYM
 *.o
 /notebooks/.ipynb_checkpoints
+*checkpoint.ipynb
 *.dSYM/
