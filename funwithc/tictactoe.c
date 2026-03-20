@@ -89,7 +89,8 @@ char checkWin(char *selections) {
 }
 
 void drawGrid(char *selections) {
-  for (int i = 1; i <= 18; i++) {
+  int i;
+  for (i = 1; i <= 18; i++) {
     char currentChar = selections[(i - 1) / 2];
     if (i % 6 == 0) {
       printf("\n");
@@ -134,10 +135,11 @@ int getPlayerCount() {
 int main() {
   char selections[9];
   int multiplayer = getPlayerCount();
-  for (int i = 0; i <= 8; i++) {
+  int i, gameCounter;
+  for (i = 0; i <= 8; i++) {
     selections[i] = '0';
   }
-  for (int gameCounter = 0; gameCounter <= 8; gameCounter++) {
+  for (gameCounter = 0; gameCounter <= 8; gameCounter++) {
     drawGrid(selections);
     int moveMade = makeMoves(selections, multiplayer, gameCounter) - 1;
     if (gameCounter % 2 == 0) {

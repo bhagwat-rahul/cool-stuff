@@ -8,7 +8,8 @@ void fizzbuzz(char *result, size_t maxsize) {
     int buzz = 5;
     size_t written = 0;
     size_t remaining = maxsize;
-    for (int i = 0; i<= n; i++)
+    int i;
+    for (i = 0; i<= n; i++)
         {
             int ret;
             if (i % fizz == 0 && i % buzz ==0)
@@ -49,7 +50,7 @@ int main()
 {
     char output[100000] = {0};
     fizzbuzz(output, sizeof(output));
-     // TODO: Add unit test instead of print statement
+    /* TODO: Add unit test instead of print statement */
     printf("%s", output);
     return 0;
 }
