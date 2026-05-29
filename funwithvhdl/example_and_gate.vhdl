@@ -7,7 +7,8 @@ entity example_and is
 -- Define interface
 port (
 input_1: in std_logic;
-input_2: in std_logic;
+input_2: in std_logi
+c;
 and_result: out std_logic
 );
 end example_and;
