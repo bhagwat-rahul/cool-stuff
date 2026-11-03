@@ -11,3 +11,5 @@ Properties of a mig are:-
 */
 
 // Very prone to SIMD parallelism since you can bitpack things and just do shuffles and compares, etc.
+
+// We moved from SOPs to DAGs to AIG DAGs cz in a graph, functionality of each node needs to be restricted for computation to be more effective (MIGs and XMGs further extend this idea)
