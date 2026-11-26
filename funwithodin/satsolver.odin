@@ -12,10 +12,8 @@ CNF :: struct {
 Solution :: []bool
 
 main :: proc() {
-	fmt.println("What is clause A?")
-	// a, _ := os.read_input
-	fmt.println("What is clause B?")
-	// b, _ := os.read_input
+	// fmt.println("What's the clause?")
+	// a := read_clause()
 	solution: Solution = sat_solve(a, b)
 }
 
