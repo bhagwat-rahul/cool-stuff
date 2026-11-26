@@ -1,7 +1,6 @@
 package satsolver
 
-Var :: distinct u32
-Lit :: distinct u32
+Lit :: distinct i32 // each value is a var and its - is its negation/inverse
 
 Clause :: []Lit // clause is just array of lits + array len (for now, can be more later)
 
