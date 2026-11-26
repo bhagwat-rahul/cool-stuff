@@ -14,11 +14,18 @@ sat_solve :: proc(cnf: CNF) -> (solution: Solution = nil) {
 	return solution
 }
 
-main :: proc() {
+main :: proc() -> int {
 	ensure(len(os.args) >= 2, "Please provide a filepath to a cnf file")
 	cnf := read_cnf_from_dimacs_cnf_file(os.args[1])
 	solution := sat_solve(cnf)
-	if solution == nil {fmt.println("UNSAT")} else {fmt.println(solution)}
+	if solution == nil {
+		fmt.println("UNSAT")
+		return 20
+	} else {
+		fmt.println(solution)
+		return 10
+	}
+	return 0 // 0 is unknown (1 or other non-zero is error, out of memory etc.)
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
