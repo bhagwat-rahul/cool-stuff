@@ -41,7 +41,12 @@ read_cnf_from_dimacs_cnf_file :: proc(filepath: string) -> (cnf: CNF = {}) {
 }
 
 // write out solution in DIMACS output format (sat competition format)
-write_out_solution_file :: proc(filepath: string, solution: Solution) {}
+write_out_solution_file :: proc(filepath: string, solution: Solution) -> (err: os.Error = nil) {
+	file_bytes: []byte
+	// TODO(rahul): construct solution into bytes for streamout
+	err = os.write_entire_file_from_bytes(filepath, file_bytes)
+	return err
+}
 
 /* //////////////////////////////////////////////////////////////////////////////////////
 // End file utils
