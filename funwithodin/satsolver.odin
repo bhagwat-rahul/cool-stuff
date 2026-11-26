@@ -2,11 +2,11 @@ package satsolver
 
 Lit :: distinct i32 // each value is a var and its - is its negation/inverse
 
-Clause :: []Lit // clause is just array of lits + array len (for now, can be more later)
+Clause :: []Lit // clause is just array of lits + array len (for now, can be more later) (everything in this array is or'ed)
 
 CNF :: struct {
 	num_vars, num_clauses: u32,
-	clauses:               []Clause,
+	clauses:               []Clause, // everything in this array is and'ed
 }
 
 Solution :: []bool
