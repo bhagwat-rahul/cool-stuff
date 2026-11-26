@@ -14,18 +14,22 @@ SampleCNF: CNF : {{322, 4343, 4542}, {1234, 56454}, {4542, -4343}}
 
 main :: proc() {
 	ensure(len(os.args) >= 2, "Please provide a filepath to a cnf file")
-	cnf := read_cnf_from_file(os.args[1])
+	cnf := read_cnf_from_dimacs_cnf_file(os.args[1])
 	solution := sat_solve(cnf)
 	if solution == nil {fmt.println("UNSAT")} else {fmt.println(solution)}
 }
 
-// read cnf text from a text file with ands, ors, negations and return cnf from it
-read_cnf_from_file :: proc(filepath: string) -> (cnf: CNF = {}) {
+// read a dimacs cnf formatted file and return clauses from it
+read_cnf_from_dimacs_cnf_file :: proc(filepath: string) -> (cnf: CNF = {}) {
 	cnf_contents, file_read_err := os.read_entire_file_from_path(filepath, context.temp_allocator)
 	ensure(file_read_err == nil, fmt.tprint("Error reading cnf file:", file_read_err))
 
 	cnf_convert: for byte in cnf_contents {
-		switch byte {}
+		switch byte {
+		case 'c', 'C': // this is a comment skip it
+		case 'p', 'P': // this is the problem line (how many vars, how many clauses)
+		case: // file contents
+		}
 	}
 	return cnf
 }
