@@ -3,14 +3,16 @@ package satsolver
 import "core:fmt"
 import "core:os"
 
-// each value is a var and its - is its negation/inverse
-// clause is just array of lits + array len (for now, can be more later) (everything in this array is or'ed)
-Lit :: distinct i32
-Clause :: []Lit
+Lit :: distinct i32 // i32 so we can account for negation (a diff way instead of using lower bit for neg'd or not)
+Clause :: []Lit // everything in this array is or'ed
 CNF :: []Clause // everything in this array is and'ed
 Solution :: []bool
 
 SampleCNF: CNF : {{322, 4343, 4542}, {1234, 56454}, {4542, -4343}}
+
+sat_solve :: proc(cnf: CNF) -> (solution: Solution = nil) {
+	return solution
+}
 
 main :: proc() {
 	ensure(len(os.args) >= 2, "Please provide a filepath to a cnf file")
@@ -18,6 +20,10 @@ main :: proc() {
 	solution := sat_solve(cnf)
 	if solution == nil {fmt.println("UNSAT")} else {fmt.println(solution)}
 }
+
+/* //////////////////////////////////////////////////////////////////////////////////////
+// Begin file utils
+*///////////////////////////////////////////////////////////////////////////////////////
 
 // read a dimacs cnf formatted file and return clauses from it
 read_cnf_from_dimacs_cnf_file :: proc(filepath: string) -> (cnf: CNF = {}) {
@@ -34,6 +40,9 @@ read_cnf_from_dimacs_cnf_file :: proc(filepath: string) -> (cnf: CNF = {}) {
 	return cnf
 }
 
-sat_solve :: proc(cnf: CNF) -> (solution: Solution = nil) {
-	return solution
-}
+// write out solution in DIMACS output format (sat competition format)
+write_out_solution_file :: proc(filepath: string, solution: Solution) {}
+
+/* //////////////////////////////////////////////////////////////////////////////////////
+// End file utils
+*///////////////////////////////////////////////////////////////////////////////////////
