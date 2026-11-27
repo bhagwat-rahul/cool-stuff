@@ -1,3 +1,8 @@
+/* SAT solver for CNF (conjunctive normal form) sat solving
+// this has variables (allowed symbols Ai ... An), literals (instances of vars with polarity i.e. negation)
+// Clauses (literal's or'ed together), and Formula's (Clauses And'ed together)
+// Usually formatted according to the DIMACS spec (competition format)
+*/
 package satsolver
 
 import "core:fmt"
@@ -5,12 +10,12 @@ import "core:os"
 
 Lit :: distinct i32 // i32 so we can account for negation (a diff way instead of using lower bit for neg'd or not)
 Clause :: []Lit // everything in this array is or'ed
-CNF :: []Clause // everything in this array is and'ed
+Formula :: []Clause // everything in this array is and'ed
 Solution :: []bool
 
-SampleCNF: CNF : {{322, 4343, 4542}, {1234, 56454}, {4542, -4343}}
+SampleFormula: Formula : {{322, 4343, 4542}, {1234, 56454}, {4542, -4343}}
 
-sat_solve :: proc(cnf: CNF) -> (solution: Solution = nil) {
+sat_solve :: proc(formula: Formula) -> (solution: Solution = nil) {
 	return solution
 }
 
