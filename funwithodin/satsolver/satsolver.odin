@@ -22,7 +22,7 @@ sat_solve :: proc(formula: Formula) -> (solution: Solution = nil) {
 
 main :: proc() -> int {
 	ensure(len(os.args) >= 2, "Please provide a filepath to a cnf file")
-	cnf := read_cnf_from_dimacs_cnf_file(os.args[1])
+	cnf := read_dimacs_cnf_problem_file(os.args[1])
 	solution := sat_solve(cnf)
 	if solution == nil {
 		fmt.println("UNSAT")
@@ -39,7 +39,7 @@ main :: proc() -> int {
 *///////////////////////////////////////////////////////////////////////////////////////
 
 // read a dimacs cnf formatted file and return clauses from it
-read_cnf_from_dimacs_cnf_file :: proc(filepath: string) -> (formula: Formula = {}) {
+read_dimacs_cnf_problem_file :: proc(filepath: string) -> (formula: Formula = {}) {
 	l := CNFLexer {
 		filepath = filepath,
 		contents = {},
@@ -77,7 +77,7 @@ read_cnf_from_dimacs_cnf_file :: proc(filepath: string) -> (formula: Formula = {
 }
 
 // write out solution in DIMACS output format (sat competition format)
-write_out_solution_file :: proc(filepath: string, solution: Solution) -> (err: os.Error = nil) {
+write_dimacs_cnf_solution_file :: proc(filepath: string, solution: Solution) -> (err: os.Error = nil) {
 	file_bytes: []byte
 	// TODO(rahul): construct solution into bytes for streamout
 	err = os.write_entire_file_from_bytes(filepath, file_bytes)
