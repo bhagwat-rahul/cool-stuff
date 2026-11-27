@@ -41,10 +41,13 @@ main :: proc() -> int {
 // read a dimacs cnf formatted file and return clauses from it
 read_dimacs_cnf_problem_file :: proc(filepath: string) -> (formula: Formula = {}) {
 	l := CNFLexer {
-		filepath = filepath,
-		contents = {},
-		idx      = 0,
-		newlines = 0,
+		filepath   = filepath,
+		contents   = {},
+		idx        = 0,
+		newlines   = 0,
+		vars       = 0,
+		clauses    = 0,
+		clause_idx = 0,
 	}
 	file_contents, file_read_err := os.read_entire_file_from_path(filepath, context.temp_allocator)
 	ensure(file_read_err == nil, fmt.tprint("Error reading cnf file:", file_read_err))
@@ -56,12 +59,12 @@ read_dimacs_cnf_problem_file :: proc(filepath: string) -> (formula: Formula = {}
 		switch byte {
 		case 'c':
 			for l.contents[l.idx] != '\n' { l.idx += 1 }
-			l.idx += 1 // consume \n
+			cnf_lexer_consume_byte(&l, '\n') // consume \n
 		case 'p':
 			cnf_lexer_skip_newlines_whitespace(&l)
-			vars: int = cnf_lexer_scan_int(&l)
+			l.vars = u32(cnf_lexer_scan_int(&l))
 			cnf_lexer_skip_newlines_whitespace(&l)
-			clauses: int = cnf_lexer_scan_int(&l)
+			l.clauses = u32(cnf_lexer_scan_int(&l))
 			cnf_lexer_skip_newlines_whitespace(&l)
 		case '0' ..< '9':
 			num := cnf_lexer_scan_int(&l)
@@ -85,10 +88,13 @@ write_dimacs_cnf_solution_file :: proc(filepath: string, solution: Solution) -> 
 }
 
 CNFLexer :: struct {
-	filepath: string,
-	contents: []byte,
-	idx:      u32,
-	newlines: u32,
+	filepath:   string,
+	contents:   []byte,
+	idx:        u32,
+	newlines:   u32,
+	vars:       u32,
+	clauses:    u32,
+	clause_idx: u32,
 }
 
 cnf_lexer_skip_newlines_whitespace :: #force_inline proc(l: ^CNFLexer) {
