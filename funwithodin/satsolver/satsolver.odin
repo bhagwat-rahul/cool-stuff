@@ -38,7 +38,7 @@ main :: proc() -> int {
 *///////////////////////////////////////////////////////////////////////////////////////
 
 // read a dimacs cnf formatted file and return clauses from it
-read_cnf_from_dimacs_cnf_file :: proc(filepath: string) -> (cnf: CNF = {}) {
+read_cnf_from_dimacs_cnf_file :: proc(filepath: string) -> (formula: Formula = {}) {
 	cnf_contents, file_read_err := os.read_entire_file_from_path(filepath, context.temp_allocator)
 	ensure(file_read_err == nil, fmt.tprint("Error reading cnf file:", file_read_err))
 
@@ -49,7 +49,7 @@ read_cnf_from_dimacs_cnf_file :: proc(filepath: string) -> (cnf: CNF = {}) {
 		case: // file contents
 		}
 	}
-	return cnf
+	return formula
 }
 
 // write out solution in DIMACS output format (sat competition format)
