@@ -51,6 +51,27 @@ read_cnf_from_dimacs_cnf_file :: proc(filepath: string) -> (formula: Formula = {
 	l.contents = file_contents
 
 	// iterate over the file, c is a comment until newline, p is problem statement (p NUM_VARS NUM_CLAUSES), 0 marks clause end
+	for {
+		byte := l.contents[l.idx]
+		switch byte {
+		case 'c':
+			for l.contents[l.idx] != '\n' { l.idx += 1 }
+			l.idx += 1 // consume \n
+		case 'p':
+			cnf_lexer_skip_newlines_whitespace(&l)
+			vars: int = cnf_lexer_scan_int(&l)
+			cnf_lexer_skip_newlines_whitespace(&l)
+			clauses: int = cnf_lexer_scan_int(&l)
+			cnf_lexer_skip_newlines_whitespace(&l)
+		case '0' ..< '9':
+			num := cnf_lexer_scan_int(&l)
+			for num != 0 {
+				// append num to clause
+				num = cnf_lexer_scan_int(&l)
+			}
+		case: panic("Unexpected byte")
+		}
+	}
 
 	return formula
 }
@@ -72,7 +93,20 @@ CNFLexer :: struct {
 
 cnf_lexer_skip_newlines_whitespace :: #force_inline proc(l: ^CNFLexer) {
 	c := l.contents[l.idx]
-	for c == ' ' || c == '\n' || c == '\t' {l.idx += 1}
+	for c == ' ' || c == '\n' || c == '\t' { l.idx += 1 }
+}
+
+cnf_lexer_consume_byte :: #force_inline proc(l: ^CNFLexer, byte: byte) {
+	if l.contents[l.idx] == byte { l.idx += 1 } else { panic("Unexpected byte") }
+}
+
+cnf_lexer_scan_int :: #force_inline proc(l: ^CNFLexer) -> int {
+	string_start := l.idx
+	for l.contents[l.idx] != ' ' { l.idx += 1 }
+	string_end := l.idx
+	scanned_int, int_err := strconv.parse_int(s = string(l.contents[string_start:string_end]), base = 10)
+	ensure(int_err == false, "Error converting vars string to vars num")
+	return scanned_int
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
