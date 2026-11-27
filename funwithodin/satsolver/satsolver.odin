@@ -16,8 +16,6 @@ Clause :: []Lit // everything in this array is or'ed
 Formula :: []Clause // everything in this array is and'ed
 Solution :: []bool
 
-SampleFormula: Formula : {{322, 4343, 4542}, {1234, 56454}, {4542, -4343}}
-
 sat_solve :: proc(formula: Formula) -> (solution: Solution = nil) {
 	return solution
 }
