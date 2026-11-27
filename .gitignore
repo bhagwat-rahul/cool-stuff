@@ -17,3 +17,4 @@
 /notebooks/.ipynb_checkpoints
 *checkpoint.ipynb
 *.dSYM/
+funwithodin/satsolver/test-data/
