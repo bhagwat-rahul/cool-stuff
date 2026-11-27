@@ -6,7 +6,10 @@
 package satsolver
 
 import "core:fmt"
+import "core:mem"
+import "core:mem/virtual"
 import "core:os"
+import "core:strconv"
 
 Lit :: distinct i32 // i32 so we can account for negation (a diff way instead of using lower bit for neg'd or not)
 Clause :: []Lit // everything in this array is or'ed
@@ -39,17 +42,18 @@ main :: proc() -> int {
 
 // read a dimacs cnf formatted file and return clauses from it
 read_cnf_from_dimacs_cnf_file :: proc(filepath: string) -> (formula: Formula = {}) {
-	cnf_contents, file_read_err := os.read_entire_file_from_path(filepath, context.temp_allocator)
-	ensure(file_read_err == nil, fmt.tprint("Error reading cnf file:", file_read_err))
-
-	cnf_convert: for byte in cnf_contents {
-		switch byte {
-		case 'c', 'C': // this is a comment skip it
-		case 'p', 'P': // this is the problem line (how many vars, how many clauses)
-		case '0': // EOL consume 0 and following \n
-		case: // file contents
-		}
+	l := CNFLexer {
+		filepath = filepath,
+		contents = {},
+		idx      = 0,
+		newlines = 0,
 	}
+	file_contents, file_read_err := os.read_entire_file_from_path(filepath, context.temp_allocator)
+	ensure(file_read_err == nil, fmt.tprint("Error reading cnf file:", file_read_err))
+	l.contents = file_contents
+
+	// iterate over the file, c is a comment until newline, p is problem statement (p NUM_VARS NUM_CLAUSES), 0 marks clause end
+
 	return formula
 }
 
@@ -59,6 +63,18 @@ write_out_solution_file :: proc(filepath: string, solution: Solution) -> (err: o
 	// TODO(rahul): construct solution into bytes for streamout
 	err = os.write_entire_file_from_bytes(filepath, file_bytes)
 	return err
+}
+
+CNFLexer :: struct {
+	filepath: string,
+	contents: []byte,
+	idx:      u32,
+	newlines: u32,
+}
+
+cnf_lexer_skip_newlines_whitespace :: #force_inline proc(l: ^CNFLexer) {
+	c := l.contents[l.idx]
+	for c == ' ' || c == '\n' || c == '\t' {l.idx += 1}
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////
