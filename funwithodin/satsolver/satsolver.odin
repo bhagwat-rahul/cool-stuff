@@ -53,7 +53,7 @@ read_dimacs_cnf_problem_file :: proc(filepath: string) -> (formula: Formula = {}
 		byte := l.contents[l.idx]
 		switch byte {
 		case 'c':
-			for l.contents[l.idx] != '\n' { l.idx += 1 }
+			for l.contents[l.idx] != '\n' { cnf_lexer_advance(&l) }
 			cnf_lexer_consume_byte(&l, '\n') // consume \n
 		case 'p':
 			cnf_lexer_consume_byte(&l, 'p')
@@ -64,11 +64,9 @@ read_dimacs_cnf_problem_file :: proc(filepath: string) -> (formula: Formula = {}
 			cnf_lexer_consume_byte(&l, 'f')
 			cnf_lexer_skip_newlines_whitespace(&l)
 			l.vars = u32(cnf_lexer_scan_int(&l))
-			fmt.printfln("vars %d", l.vars)
 			cnf_lexer_skip_newlines_whitespace(&l)
 			l.clauses = u32(cnf_lexer_scan_int(&l))
 			cnf_lexer_skip_newlines_whitespace(&l)
-			fmt.printfln("vars %d clauses %d", l.vars, l.clauses)
 		case '0' ..< '9':
 			num := cnf_lexer_scan_int(&l)
 			cnf_lexer_skip_newlines_whitespace(&l)
@@ -107,23 +105,31 @@ CNFLexer :: struct {
 cnf_lexer_skip_newlines_whitespace :: #force_inline proc(l: ^CNFLexer) {
 	c := l.contents[l.idx]
 	for c == ' ' || c == '\n' || c == '\t' {
-		l.idx += 1
+		cnf_lexer_advance(l)
 		c = l.contents[l.idx]
 	}
 }
 
-cnf_lexer_consume_byte :: #force_inline proc(l: ^CNFLexer, byte: byte) {
-	if l.contents[l.idx] == byte { l.idx += 1 } else { cnf_lexer_panic(l, fmt.tprint("Unexpected byte", byte)) }
+cnf_lexer_advance :: #force_inline proc(l: ^CNFLexer) {
+	if l.contents[l.idx] == '\n' { l.newlines += 1 }
+	l.idx += 1
+}
+
+cnf_lexer_consume_byte :: #force_inline proc(l: ^CNFLexer, expected_byte: byte) {
+	curr_byte := l.contents[l.idx]
+	if curr_byte == expected_byte {
+		cnf_lexer_advance(l)} else {cnf_lexer_panic(l, fmt.tprintf("Found '%r' expected '%r'", rune(curr_byte), rune(expected_byte)))
+	}
 }
 
 cnf_lexer_scan_int :: #force_inline proc(l: ^CNFLexer) -> int {
 	string_start := l.idx
-	for l.contents[l.idx] >= '0' && l.contents[l.idx] <= '9' { l.idx += 1 }
+	for (l.contents[l.idx] >= '0' && l.contents[l.idx] <= '9') || l.contents[l.idx] == '-' { cnf_lexer_advance(l) }
 	string_end := l.idx
 	num_string := string(l.contents[string_start:string_end])
 	scanned_int, conv_ok := strconv.parse_int(s = num_string, base = 10)
 	cnf_lexer_ensure(l, conv_ok, fmt.tprintf("Error converting string %s to num", num_string))
-	l.idx += 1 // move past the int before returning
+	cnf_lexer_advance(l) // move past the int before returning
 	return scanned_int
 }
 
