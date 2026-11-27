@@ -35,53 +35,55 @@ main :: proc() {
 // read a dimacs cnf formatted file and return clauses from it
 read_dimacs_cnf_problem_file :: proc(filepath: string) -> (formula: Formula = {}) {
 	l := CNFLexer {
-		filepath   = filepath,
-		contents   = {},
-		idx        = 0,
-		newlines   = 0,
-		vars       = 0,
-		clauses    = 0,
-		clause_idx = 0,
+		filepath = filepath,
+		newlines = 1,
 	}
+
 	file_contents, file_read_err := os.read_entire_file_from_path(filepath, context.temp_allocator)
 	ensure(file_read_err == nil, fmt.tprint("Error reading cnf file:", file_read_err))
 	l.contents = file_contents
 
-	// iterate over the file, c is a comment until newline, p is problem statement (p NUM_VARS NUM_CLAUSES), 0 marks clause end
-	for {
-		if l.idx == u32(len(l.contents)) { break }
-		byte := l.contents[l.idx]
-		switch byte {
-		case 'c':
-			for l.contents[l.idx] != '\n' { cnf_lexer_advance(&l) }
-			cnf_lexer_consume_byte(&l, '\n') // consume \n
-		case 'p':
-			cnf_lexer_consume_byte(&l, 'p')
-			cnf_lexer_skip_newlines_whitespace(&l)
-			// have a consume bytes instead of just consume byte
+	clauses: [dynamic]Clause
+	current: [dynamic]Lit
+	defer delete(current)
+
+	// c is a comment until newline, p is the problem line (p cnf VARS CLAUSES),
+	// and 0 marks the end of a clause (not the end of a line).
+	for !cnf_lexer_at_end(&l) {
+		cnf_lexer_skip_whitespace(&l)
+		if cnf_lexer_at_end(&l) { break }
+
+		switch l.contents[l.idx] {
+		case 'c', 'C': for !cnf_lexer_at_end(&l) && l.contents[l.idx] != '\n' {
+					cnf_lexer_advance(&l)
+				}
+		case 'p', 'P':
+			cnf_lexer_advance(&l) // consume 'p'
+			cnf_lexer_skip_whitespace(&l)
 			cnf_lexer_consume_byte(&l, 'c')
 			cnf_lexer_consume_byte(&l, 'n')
 			cnf_lexer_consume_byte(&l, 'f')
-			cnf_lexer_skip_newlines_whitespace(&l)
 			l.vars = u32(cnf_lexer_scan_int(&l))
-			cnf_lexer_skip_newlines_whitespace(&l)
 			l.clauses = u32(cnf_lexer_scan_int(&l))
-			cnf_lexer_skip_newlines_whitespace(&l)
-		case '0' ..< '9':
+		case:
 			num := cnf_lexer_scan_int(&l)
-			cnf_lexer_skip_newlines_whitespace(&l)
-			for num != 0 {
-				// append num to clause
-				num = cnf_lexer_scan_int(&l)
+
+			if num == 0 {
+				clause := make([]Lit, len(current))
+				copy(clause, current[:])
+				append(&clauses, clause)
+				clear(&current)
+				l.clause_idx += 1
+			} else {
+				append(&current, Lit(num))
 			}
-			cnf_lexer_consume_byte(&l, '0')
-			l.clause_idx += 1
-			cnf_lexer_skip_newlines_whitespace(&l)
-		case: cnf_lexer_panic(&l, "Unexpected byte")
 		}
 	}
 
-	return formula
+	ensure(u32(len(clauses)) == l.clauses, fmt.tprintf("expected %d clauses, got %d", l.clauses, len(clauses)))
+
+	formula = clauses[:]
+	return
 }
 
 // write out solution in DIMACS output format (sat competition format)
@@ -102,34 +104,44 @@ CNFLexer :: struct {
 	clause_idx: u32,
 }
 
-cnf_lexer_skip_newlines_whitespace :: #force_inline proc(l: ^CNFLexer) {
-	c := l.contents[l.idx]
-	for c == ' ' || c == '\n' || c == '\t' {
-		cnf_lexer_advance(l)
-		c = l.contents[l.idx]
+cnf_lexer_at_end :: #force_inline proc(l: ^CNFLexer) -> bool { return l.idx >= u32(len(l.contents)) }
+
+cnf_lexer_skip_whitespace :: #force_inline proc(l: ^CNFLexer) {
+	for !cnf_lexer_at_end(l) {
+		switch l.contents[l.idx] {
+		case ' ', '\t', '\r', '\n': cnf_lexer_advance(l)
+		case: return
+		}
 	}
 }
 
 cnf_lexer_advance :: #force_inline proc(l: ^CNFLexer) {
+	if cnf_lexer_at_end(l) { return }
 	if l.contents[l.idx] == '\n' { l.newlines += 1 }
 	l.idx += 1
 }
 
 cnf_lexer_consume_byte :: #force_inline proc(l: ^CNFLexer, expected_byte: byte) {
-	curr_byte := l.contents[l.idx]
-	if curr_byte == expected_byte {
-		cnf_lexer_advance(l)} else {cnf_lexer_panic(l, fmt.tprintf("Found '%r' expected '%r'", rune(curr_byte), rune(expected_byte)))
+	curr_byte: byte
+	if !cnf_lexer_at_end(l) { curr_byte = l.contents[l.idx] }
+	if curr_byte == expected_byte { cnf_lexer_advance(l) } else {
+		cnf_lexer_panic(l, fmt.tprintf("Found '%r' expected '%r'", rune(curr_byte), rune(expected_byte)))
 	}
 }
 
 cnf_lexer_scan_int :: #force_inline proc(l: ^CNFLexer) -> int {
+	cnf_lexer_skip_whitespace(l)
+
 	string_start := l.idx
-	for (l.contents[l.idx] >= '0' && l.contents[l.idx] <= '9') || l.contents[l.idx] == '-' { cnf_lexer_advance(l) }
-	string_end := l.idx
-	num_string := string(l.contents[string_start:string_end])
+	if !cnf_lexer_at_end(l) && (l.contents[l.idx] == '-' || l.contents[l.idx] == '+') { cnf_lexer_advance(l) }
+
+	digits_start := l.idx
+	for !cnf_lexer_at_end(l) && l.contents[l.idx] >= '0' && l.contents[l.idx] <= '9' { cnf_lexer_advance(l) }
+	cnf_lexer_ensure(l, l.idx > digits_start, "Expected digits")
+
+	num_string := string(l.contents[string_start:l.idx])
 	scanned_int, conv_ok := strconv.parse_int(s = num_string, base = 10)
 	cnf_lexer_ensure(l, conv_ok, fmt.tprintf("Error converting string %s to num", num_string))
-	cnf_lexer_advance(l) // move past the int before returning
 	return scanned_int
 }
 
