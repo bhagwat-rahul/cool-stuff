@@ -46,6 +46,7 @@ read_cnf_from_dimacs_cnf_file :: proc(filepath: string) -> (formula: Formula = {
 		switch byte {
 		case 'c', 'C': // this is a comment skip it
 		case 'p', 'P': // this is the problem line (how many vars, how many clauses)
+		case '0': // EOL consume 0 and following \n
 		case: // file contents
 		}
 	}
